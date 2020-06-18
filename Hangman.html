@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="background">
+    <header>
+        <h1 class="name">Hangman Resurrected</h1>
+    </header>
+    <div class="main">
+        <div class="newGame">
+            <form>
+                <label for="numberOfLetters">Start a new game. Tell me how many letters are in your word and I will guess the word:</label>
+                <input class="newGameTextBox" id="numberOfLetters" type="text" maxlength="2">
+                <button type="submit" id="submit">Start New Game</button>
+              </form>
+        </div>
+        <div class="Messages">
+            <h6>Message from the computer will go here</h6>
+        </div>
+        <div class="OuterHorizontalBox">
+            <div class="StatsBox">stats go here</div>
+            <div class="CentralBox">
+                <div class="UpperWaterfall Waterfall">upperwaterfall</div>
+                <div class="gamePlay">
+                    <h6>This is where the game is played</h6>
+                </div>
+                <div class="LowerWaterfall Waterfall">lowerwaterfall</div>
+            </div>
+            <div class="definitionApiBox">
+                <div class="definitionApiIntro">
+                    <h4>I'm not saying this is your word, but it could be </h4>
+                </div>
+                <div class="definitionApiWord"></div>
+                <div class="definitionApiDefinitions"> </div>
+
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="api.js" ></script>
+    <script type="text/javascript" src="hfWords.js" ></script>
+    <script type="text/javascript" src="bigWords.js" ></script>
+    <script type="text/javascript" src="app.js" ></script>
+
+</body>
+
+</html>

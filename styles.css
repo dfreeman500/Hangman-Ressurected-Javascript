@@ -1,0 +1,79 @@
+/* .background{
+    background-color: black;
+} */
+
+.name{
+    border: 1px solid blue;
+    text-align: center;
+
+}
+
+.newGameTextBox {
+    border: 1 px solid red;
+    width:30px;
+}
+
+.main{
+    border: 1px solid green;
+
+}
+.newGame{
+    border: 1px solid violet;
+
+}
+.Messages{
+    border: 1px solid silver;
+    text-align: center;
+
+}
+.OuterHorizontalBox{
+    display:flex;
+    flex-direction:row;
+    border: 1px solid black;
+
+}
+.StatsBox{
+    border: 1px solid blueviolet;
+    min-width: 20%;
+
+}
+.CentralBox{
+    border: 1px solid orangered;
+min-width: 50%;
+min-height: auto;
+}
+.UpperWaterfall{
+    border: 1px solid brown;
+
+}
+.gamePlay{
+    border: 1px solid grey;
+
+}
+.LowerWaterfall{
+    border: 1px solid red;
+
+}
+
+.Waterfall{
+min-height: 500px;
+
+}
+
+
+
+.definitionApiBox {
+    border: 1px solid red;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+
+  }
+
+.definitionApiWord{
+    border: 2px solid yellow;
+}
+
+.definitionApiDefinitions{
+    border: 2px solid green;
+}
