@@ -1,13 +1,36 @@
-let word = "continent";
+//let word = "continent";
+//for (i=0;i<hfWords.length;i++){console.log(hfWords[i].Word)}
+randomNumber = Math.floor(Math.random() * hfWords.length); 
+let word = hfWords[randomNumber].Word;
+console.log(hfWords[randomNumber].Word)
+console.log(hfWords[randomNumber].WordLength)
+console.log(hfWords[randomNumber].IndexLetter)
+console.log(hfWords[randomNumber].Set)
+console.log(hfWords[randomNumber].Letters)
+
+let listOfWords = []
+for(i=0;i<hfWords.length;i++){if(hfWords[i].WordLength === 14){listOfWords.push(hfWords[i])}}
+ console.log(listOfWords)
+
+
 
 const definitionApiIntro = document.querySelector('.definitionApiIntro');
 const definitionApiWord = document.querySelector('.definitionApiWord');
 const definitionApiDefinitions = document.querySelector('.definitionApiDefinitions');
-
+document.getElementById("newGame").onclick = function(){    //sets the wordlength variable upon new game click
+let wordLength = console.log(document.getElementById("numberOfLetters").value);
+console.log('hello')
+}
+    // $.ajax({
+    //   url: 'https://randomuser.me/api/',
+    //   dataType: 'json',
+    //   success: function(data) {
+    //     document.body.style.backgroundColor = rgb();
+    //     console.log(document.body.style.backgroundColor);
 
 function fetchData(url){ // Will use this as a general fetch -ex: dictionary def, wikipedia image possibly
     return fetch(url)
-    .then(checkStatus)
+    .then(checkStatus) //looks for status errors
     .then(res => res.json()) // parses
     .catch(error => console.log('There was a problem attempting to retrieve this information:', error))
 }
@@ -50,4 +73,4 @@ function checkStatus(response){
 
 
 
-console.log(window.words)
+// console.log(window.words)
