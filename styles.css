@@ -48,16 +48,23 @@ min-height: auto;
 }
 .gamePlay{
     border: 1px solid grey;
+    min-height: 200px;
+    display:flex;
 
 }
+
+.letterBox{
+    max-width: fit-content;
+
+}
+
 .LowerWaterfall{
     border: 1px solid red;
 
 }
 
 .Waterfall{
-min-height: 500px;
-
+min-height: 300px;
 }
 
 
