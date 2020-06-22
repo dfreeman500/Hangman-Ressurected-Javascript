@@ -54,7 +54,7 @@ min-height: auto;
 }
 
 .letterBox{
-    max-width: fit-content;
+    max-width: 40px;
 
 }
 
