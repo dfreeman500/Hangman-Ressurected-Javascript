@@ -22,26 +22,70 @@ let wordLists = [hfWords, bigWords]; //List of variable pointing to the differen
 let candidateWords = []
 let eliminatedWords = []
 
-var lettersGuessed=[]
-var allLettersFromValidWords=[]
-var letterFrequency=[]
+var lettersGuessed = []
+var letterFrequency = []
+
+
+//finds all of the letters in the possible words and counts them, returns an array of letters presented in frequency order w/o counts
+function countLetters(string) {
+    let letterMap = {}
+    let letterArray = []
+    let valuesArray = []
+    //let maxLetterValue = 0
+
+    //creates a map with Frequency:Letter
+    for (let char of string) {
+        if (letterMap.hasOwnProperty(char)) {
+            letterMap[char]++
+        } else {
+            letterMap[char] = 1
+        }
+    }
+
+    letterArray = Object.keys(letterMap)
+    valuesArray = Object.values(letterMap)
+    //maxLetterValue = Math.max(...valuesArray)
+    var valueSet = new Set(valuesArray)
+    var newSortedLettersFromSet = [...valueSet]
+    newSortedLettersFromSet.sort(function (a, b) { return b - a }); //Sorts the set from largest to smallest
+    //console.log("this is new sorted letters from set", newSortedLettersFromSet)
+
+    let newSortedLetters = []
+
+    ///iterate through the set of frequency numbers by value
+    for (let item of newSortedLettersFromSet) { 
+        //iterate through array of letters by index
+        for (let i=0; i<valuesArray.length;i++) {   
+            //if letters w/ index[i] equals the value of the frequcy number and it's not already in the newSortedLetters array, add it
+            if (valuesArray[i] === item && newSortedLetters.includes(letterArray[i])==false) { 
+                newSortedLetters.push(letterArray[i])
+            }
+        }
+    }
+    //console.log("letterMap: ", letterMap)
+    //console.log("newsortedLetters: ", newSortedLetters)
+    return newSortedLetters
+}
+
+
+
+
+
+
+
 
 
 function analyzeWords(userWordLength, userInputIndexed, userInputString, userInputLetterArray) {
     console.log("inside analyze words function: userWordLength:", userWordLength, "userString", userInputIndexed)
-
+    allLettersFromValidWords = []
+    letterFrequency = []
 
     for (i = 0; i < hfWords.length; i++) {
         var isCandidateWord = true;
         if (hfWords[i].WordLength == userWordLength) {
             for (j = 0; j < userWordLength; j++) {
-                // if (userString[j] === " " || userString[j] == hfWords[i].IndexLetter[j]){
-                //     isCandidateWord = true
-                // }else{isCandidateWord=false}
-                // console.log(hfWords[i].IndexLetter[j], userString[j], isCandidateWord)
                 if (userInputIndexed[j] === " " || userInputIndexed[j] == hfWords[i].IndexLetter[j]) {
-                    //isCandidateWord=true;
-                    console.log(isCandidateWord)
+                    //console.log(isCandidateWord)
                 } else {
                     isCandidateWord = false;
                     break;
@@ -49,6 +93,17 @@ function analyzeWords(userWordLength, userInputIndexed, userInputString, userInp
             }
             if (isCandidateWord === true) {
                 candidateWords.push(hfWords[i])
+                // allLettersFromValidWords =[...hfWords[i].Set]
+                for (j = 0; j < hfWords[i].Set.length; j++) {
+                    var letterCheck = /^[a-zA-Z]+$/;
+                    if (letterCheck.test(hfWords[i].Set[j])) {
+                        allLettersFromValidWords += hfWords[i].Set[j]
+                    }
+
+                    //console.log(hfWords[i].Set)
+                }
+
+
             } else {
                 eliminatedWords.push(hfWords[i])
             }
@@ -56,11 +111,13 @@ function analyzeWords(userWordLength, userInputIndexed, userInputString, userInp
     }
     console.log("this is candidate words: ", candidateWords);
     console.log("this is eliminated words: ", eliminatedWords);
-    console.log("this is a candidate word:", candidateWords[0].Word)
+    //console.log("this is a candidate word:", candidateWords[0].Word)
+    console.log("this is alllettersfromvalidword", allLettersFromValidWords)
+    console.log(countLetters(allLettersFromValidWords))
 
     //finds a random word in the candidateWords array and picks a random one
     randomNumber = Math.floor(Math.random() * candidateWords.length);
-    word = candidateWords[randomNumber].Word;  
+    word = candidateWords[randomNumber].Word;
     fetchData(`https://dictionaryapi.com/api/v3/references/collegiate/json/${word}?key=${apiKey}`) //fetch for dictionary definition
         .then(data => generateDefinitionDisplay(data))
 }
@@ -102,7 +159,7 @@ document.getElementById("newGame").onclick = function () {    //sets the wordlen
             userInputSet.add(userInputString[i]);
         }
         userInputSet.add(userInputLetterArray);
-        console.log("user input in various forms",i, userInputJSON, userInputString, userInputLetterArray, userInputSet)
+        console.log("user input in various forms", i, userInputJSON, userInputString, userInputLetterArray, userInputSet)
         candidateWords = []
         eliminatedWords = []
         analyzeWords(userInputWordLength, userInputJSON, userInputString, userInputLetterArray, userInputSet)
