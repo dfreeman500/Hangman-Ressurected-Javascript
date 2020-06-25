@@ -26,6 +26,7 @@ var lettersGuessed = []
 var letterFrequency = []
 
 
+
 //finds all of the letters in the possible words and counts them, returns an array of letters presented in frequency order w/o counts
 function countLetters(string) {
     let letterMap = {}
@@ -63,8 +64,17 @@ function countLetters(string) {
         }
     }
     //console.log("letterMap: ", letterMap)
-    //console.log("newsortedLetters: ", newSortedLetters)
+    console.log("newsortedLetters: ", newSortedLetters)
     return newSortedLetters
+}
+
+
+function makeAGuess(arrayOfLettersByFrequency,userInputString){
+    for (i=0; i<arrayOfLettersByFrequency.length; i++){
+        if(!userInputString.includes(arrayOfLettersByFrequency[i]) && !lettersGuessed.includes(arrayOfLettersByFrequency[i]) ){
+            return console.log("This is my guesses:", arrayOfLettersByFrequency[i])
+        }
+    }
 }
 
 
@@ -72,11 +82,8 @@ function countLetters(string) {
 
 
 
-
-
-
-function analyzeWords(userWordLength, userInputIndexed, userInputString, userInputLetterArray) {
-    console.log("inside analyze words function: userWordLength:", userWordLength, "userString", userInputIndexed)
+function analyzeWords(userWordLength, userInputIndexed, userInputString, userInputLetterArray, userInputSet) {
+    console.log("inside analyze words function: userWordLength:", userWordLength, "userInputString", userInputString, "userInputLetterArray", userInputIndexed, "userInputSet", userInputSet)
     allLettersFromValidWords = []
     letterFrequency = []
 
@@ -113,7 +120,9 @@ function analyzeWords(userWordLength, userInputIndexed, userInputString, userInp
     console.log("this is eliminated words: ", eliminatedWords);
     //console.log("this is a candidate word:", candidateWords[0].Word)
     console.log("this is alllettersfromvalidword", allLettersFromValidWords)
-    console.log(countLetters(allLettersFromValidWords))
+    //console.log(countLetters(allLettersFromValidWords))
+
+    makeAGuess(countLetters(allLettersFromValidWords),userInputString);
 
     //finds a random word in the candidateWords array and picks a random one
     randomNumber = Math.floor(Math.random() * candidateWords.length);
