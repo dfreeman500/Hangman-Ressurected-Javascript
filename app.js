@@ -23,6 +23,7 @@ let candidateWords = []
 let eliminatedWords = []
 
 var lettersGuessed = []
+var incorrectLetters = []
 var letterFrequency = []
 
 
@@ -54,11 +55,11 @@ function countLetters(string) {
     let newSortedLetters = []
 
     ///iterate through the set of frequency numbers by value
-    for (let item of newSortedLettersFromSet) { 
+    for (let item of newSortedLettersFromSet) {
         //iterate through array of letters by index
-        for (let i=0; i<valuesArray.length;i++) {   
+        for (let i = 0; i < valuesArray.length; i++) {
             //if letters w/ index[i] equals the value of the frequcy number and it's not already in the newSortedLetters array, add it
-            if (valuesArray[i] === item && newSortedLetters.includes(letterArray[i])==false) { 
+            if (valuesArray[i] === item && newSortedLetters.includes(letterArray[i]) == false) {
                 newSortedLetters.push(letterArray[i])
             }
         }
@@ -69,10 +70,13 @@ function countLetters(string) {
 }
 
 
-function makeAGuess(arrayOfLettersByFrequency,userInputString){
-    for (i=0; i<arrayOfLettersByFrequency.length; i++){
-        if(!userInputString.includes(arrayOfLettersByFrequency[i]) && !lettersGuessed.includes(arrayOfLettersByFrequency[i]) ){
-            return console.log("This is my guesses:", arrayOfLettersByFrequency[i])
+function makeAGuess(arrayOfLettersByFrequency, userInputString) {
+    for (i = 0; i < arrayOfLettersByFrequency.length; i++) {
+        if (!userInputString.includes(arrayOfLettersByFrequency[i]) && !lettersGuessed.includes(arrayOfLettersByFrequency[i])) {
+            lettersGuessed.push(arrayOfLettersByFrequency[i])
+            console.log("This is the letters guessed array:", lettersGuessed)
+            console.log("This is the incorrectLetters array:", incorrectLetters," length: ", incorrectLetters.length)
+            return console.log("This is my guess:", arrayOfLettersByFrequency[i])
         }
     }
 }
@@ -87,23 +91,45 @@ function analyzeWords(userWordLength, userInputIndexed, userInputString, userInp
     allLettersFromValidWords = []
     letterFrequency = []
 
+
+    //Consider using filter method here????
     for (i = 0; i < hfWords.length; i++) {
         var isCandidateWord = true;
         if (hfWords[i].WordLength == userWordLength) {
-            for (j = 0; j < userWordLength; j++) {
+            for (j = 0; j < userWordLength; j++) { //iterates through each possible word to find candidate
                 if (userInputIndexed[j] === " " || userInputIndexed[j] == hfWords[i].IndexLetter[j]) {
                     //console.log(isCandidateWord)
                 } else {
                     isCandidateWord = false;
                     break;
                 }
+
+                //Elminates words that have letter within the userInputString but in the wrong location || "b","u","l"," "  should eliminate "b","u","l","l"
+                if (userInputIndexed[j] === " " && userInputString.includes(hfWords[i].IndexLetter[j])) {
+                    isCandidateWord = false;
+                    break;
+                }
+
+            // if the possible candidate has letters in the incorrectLetters then is Candidate= false
+            for (k = 0; k < incorrectLetters.length; k++) {
+                if (!hfWords[i].Word.includes(incorrectLetters[k])) {
+                    // console.log(!lettersGuessed.includes(userInputSet[i]))
+                } else {
+                    isCandidateWord = false;
+                    break;
+                }
             }
+
+
+            }
+
+            //If the word is a candidate, add it to the candidate list and add the set of letters to the letter list
             if (isCandidateWord === true) {
                 candidateWords.push(hfWords[i])
                 // allLettersFromValidWords =[...hfWords[i].Set]
                 for (j = 0; j < hfWords[i].Set.length; j++) {
-                    var letterCheck = /^[a-zA-Z]+$/;
-                    if (letterCheck.test(hfWords[i].Set[j])) {
+                    var letterCheck = /^[a-zA-Z]+$/; //only alpha
+                    if (letterCheck.test(hfWords[i].Set[j])) {  //Returns a Boolean value that indicates whether or not a pattern exists in a searched string.
                         allLettersFromValidWords += hfWords[i].Set[j]
                     }
 
@@ -122,7 +148,7 @@ function analyzeWords(userWordLength, userInputIndexed, userInputString, userInp
     console.log("this is alllettersfromvalidword", allLettersFromValidWords)
     //console.log(countLetters(allLettersFromValidWords))
 
-    makeAGuess(countLetters(allLettersFromValidWords),userInputString);
+    makeAGuess(countLetters(allLettersFromValidWords), userInputString);
 
     //finds a random word in the candidateWords array and picks a random one
     randomNumber = Math.floor(Math.random() * candidateWords.length);
@@ -144,9 +170,11 @@ document.getElementById("newGame").onclick = function () {    //sets the wordlen
     }
     html += '<button type="button" id="submitLettersButton">Submit</button>' + '</form>';
     gamePlay.innerHTML = html;  //injects the html into the gameplay section
+    lettersGuessed = []
+    incorrectLetters = []
 
 
-    //Takes user input and stores into userInput JSON format
+    //Takes user input and stores into several objects
     document.getElementById("submitLettersButton").onclick = function () {
         var userInputString = "";
         var userInputLetterArray = []
@@ -171,6 +199,13 @@ document.getElementById("newGame").onclick = function () {    //sets the wordlen
         console.log("user input in various forms", i, userInputJSON, userInputString, userInputLetterArray, userInputSet)
         candidateWords = []
         eliminatedWords = []
+
+        for (i = 0; i < lettersGuessed.length; i++) {
+            if (!userInputString.includes(lettersGuessed[i]) && !incorrectLetters.includes(lettersGuessed[i])) {
+                incorrectLetters.push(lettersGuessed[i])
+            }
+
+        }
         analyzeWords(userInputWordLength, userInputJSON, userInputString, userInputLetterArray, userInputSet)
     }
 
