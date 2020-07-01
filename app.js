@@ -92,7 +92,6 @@ function makeAGuess(arrayOfLettersByFrequency, userInputString) {
             console.log("This is the letters guessed array:", lettersGuessed)
             console.log("This is the incorrectLetters array:", incorrectLetters, " length: ", incorrectLetters.length)
             console.log("This is the masterIncorrectLetters array:", masterIncorrectLetters, " length: ", masterIncorrectLetters.length)
-
             console.log("This is my guess:", arrayOfLettersByFrequency[i])
             var theGuess = arrayOfLettersByFrequency[i]
             chooseDefinedWord(theGuess)
@@ -109,6 +108,7 @@ function analyzeWords(userWordLength, userInputIndexed, userInputString, userInp
     console.log("inside analyze words function: userWordLength:", userWordLength, "userInputString", userInputString, "userInputLetterArray", userInputIndexed, "userInputSet", userInputSet)
     allLettersFromValidWords = []
     letterFrequency = []
+    var wordFullyGuessed = false;
 
     //Consider using filter method here????
     for (i = 0; i < hfWords.length; i++) {
@@ -153,6 +153,11 @@ function analyzeWords(userWordLength, userInputIndexed, userInputString, userInp
             } else {
                 eliminatedWords.push(hfWords[i])
             }
+
+            if (hfWords[i].Word === userInputString) {
+                console.log("The candidate word:", hfWords[i].Word, "matches the userString", userInputString);
+                wordFullyGuessed = true;
+            }
         }
     }
     console.log("this is candidate words: ", candidateWords);
@@ -161,16 +166,34 @@ function analyzeWords(userWordLength, userInputIndexed, userInputString, userInp
     console.log("this is alllettersfromvalidword", allLettersFromValidWords)
     //console.log(countLetters(allLettersFromValidWords))
 
-makeAGuess(countLetters(allLettersFromValidWords), userInputString);
+    if (wordFullyGuessed == false) {
+        makeAGuess(countLetters(allLettersFromValidWords), userInputString)
+    } else {
+        messages(wordFullyGuessed,userInputString)
+    };
 }
 
-function messages(theGuess){
-    let messageToUser =
+//Controls the message in the message box
+function messages(info, userInputString) {
+    if (info==true){
+        let messageToUser =
         '<div >' +
-        `<h1><p> Does your word have the letter ${theGuess} ?</p></h1>` +
+        `<h1><p> I have guessed your word. It is ${userInputString}</p></h1>` +
+        '</div>'
+    message.innerHTML = messageToUser;
+
+    }else{
+        let messageToUser =
+        '<div >' +
+        `<h1><p> Does your word have the letter ${info} ?</p></h1>` +
         '</div>'
     message.innerHTML = messageToUser;
     statsInfo();
+
+
+    }
+
+
 
 
 }
@@ -229,18 +252,19 @@ document.getElementById("newGame").onclick = function () {    //sets the wordlen
     gamePlay.innerHTML = html;  //injects the html into the gameplay section
     lettersGuessed = []
     masterIncorrectLetters = []
+    incorrectLetters =[]
     let tempUserInputLetterArray = [];
     let tempUserInputJSON = new Map();
-    let tempUserInputString= tempUserInputLetterArray.join()
+    let tempUserInputString = tempUserInputLetterArray.join()
     let tempUserInputSet = new Set();
-    for (let i=0;i<userInputWordLength;i++){
+    for (let i = 0; i < userInputWordLength; i++) {
         tempUserInputLetterArray.push(" ");
         tempUserInputJSON[i] = " "
         tempUserInputSet.add(" ")
     }
     // console.log(tempUserInputLetterArray, tempUserInputLetterArray,tempUserInputSet, tempUserInputJSON )
     analyzeWords(userInputWordLength, tempUserInputJSON, tempUserInputString, tempUserInputLetterArray, tempUserInputSet)
-    
+
     document.getElementById("submitLettersButton").onclick = function () {
         console.log("Submit was clicked")
         incorrectLetters = []
@@ -283,18 +307,19 @@ function checkStatus(response) {
 }
 
 function statsInfo() {
-    let stats ='<div >'
-    stats += `<p> Your word is ${userInputWordLength} letters long.</p>`+
+    let stats = '<div >'
+    stats += `<p> Your word is ${userInputWordLength} letters long.</p>` +
 
-        `<p> You have provided me ${userInputWordLength} letters .</p>` 
+        `<p> You have provided me ${userInputWordLength} letters .</p>`
 
-    if(masterIncorrectLetters.length!=incorrectLetters.length){
-        stats += "You changed your mind on on a letter. That's ok... but the stats might be slightly off"}
+    if (masterIncorrectLetters.length != incorrectLetters.length) {
+        stats += "You changed your mind on on a letter. That's ok... but the stats might be slightly off"
+    }
 
-    stats +=  `<p> I have guessed ${lettersGuessed.length} time(s) and they are ${lettersGuessed}.</p>` +
+    stats += `<p> I have guessed ${lettersGuessed.length} time(s) and they are ${lettersGuessed}.</p>` +
         `<p> I have guessed incorrectly ${incorrectLetters.length} time(s) given that you've said the following letters are incorrect: ${incorrectLetters}</p>` +
-        `<p> At the present time, I feel 100% confident that I will guess your word in X or fewer errors</p>`+
-        `<p> At the present time I feel that I will likely guess your word using X or fewer errors </p>`+
+        `<p> At the present time, I feel 100% confident that I will guess your word in X or fewer errors</p>` +
+        `<p> At the present time I feel that I will likely guess your word using X or fewer errors </p>` +
         '</div>'
     statsBox.innerHTML = stats;
 }
