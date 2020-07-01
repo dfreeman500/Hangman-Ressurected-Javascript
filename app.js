@@ -8,7 +8,7 @@ const message = document.querySelector('.Messages');
 
 let userInputJSON;
 let wordLists = [hfWords, bigWords]; //List of variable pointing to the different word lists
-let candidateWords = []
+var candidateWords = []
 let eliminatedWords = []
 
 var lettersGuessed = []
@@ -98,7 +98,7 @@ function makeAGuess(arrayOfLettersByFrequency, userInputString) {
             break;
         }
     }
-    messages(theGuess)
+    messages(theGuess, userInputString, candidateWords)
 }
 
 
@@ -169,32 +169,56 @@ function analyzeWords(userWordLength, userInputIndexed, userInputString, userInp
     if (wordFullyGuessed == false) {
         makeAGuess(countLetters(allLettersFromValidWords), userInputString)
     } else {
-        messages(wordFullyGuessed,userInputString)
+        messages(wordFullyGuessed, userInputString, candidateWords)
+        try {
+
+            fetchData(`https://dictionaryapi.com/api/v3/references/collegiate/json/${userInputString}?key=${apiKey}`) //fetch for dictionary definition
+                .then(data => generateDefinitionDisplay(data, wordFullyGuessed, userInputString))
+        }
+        catch (err) {
+            console.log(err.message);
+        }
     };
 }
 
-//Controls the message in the message box
-function messages(info, userInputString) {
-    if (info==true){
+//Controls the message in the message box, let vs var  messageToUser will reduce repetition
+function messages(info, userInputString, candidateWords) {
+    if (info == true) {
         let messageToUser =
-        '<div >' +
-        `<h1><p> I have guessed your word. It is ${userInputString}</p></h1>` +
-        '</div>'
-    message.innerHTML = messageToUser;
+            '<div >' +
+            `<h1><p> I have guessed your word. It is ${userInputString}</p></h1>` +
+            '</div>'
+        message.innerHTML = messageToUser;
 
-    }else{
+    } else if (info == null) {
+        console.log("The info was undefined", info)
         let messageToUser =
-        '<div >' +
-        `<h1><p> Does your word have the letter ${info} ?</p></h1>` +
-        '</div>'
-    message.innerHTML = messageToUser;
-    statsInfo();
-
+            '<div >' +
+            `<h1><p> Something went Wrong!! Are you sure you told me the correct letters. Look over the letters I've already guessed to make sure. Are you having me guess a real word?</p></h1>` +
+            '</div>'
+        message.innerHTML = messageToUser;
 
     }
+    else {
+        let messageToUser =
+            '<div >' +
+            `<h1><p> Does your word have the letter ${info} ?</h1>`
+        if(candidateWords!=null){
+            console.log("It's not null")
 
+        }else{console.log("it is null")}
 
+        if (candidateWords != null && candidateWords.length == 1) {
+            messageToUser += `<h1>Because I'm thinking your word is ... ${candidateWords[0].Word}.</h1>`
+            console.log("this is what I'm trying to pring", candidateWords[0])
 
+        }
+        messageToUser += '</p></div>'
+
+        message.innerHTML = messageToUser;
+
+    }
+    statsInfo(userInputString);
 
 }
 
@@ -236,6 +260,8 @@ function getUserInput() {
 }
 
 
+//Need to consolidate userinput... and tempUserInput... into single function
+
 document.getElementById("newGame").onclick = function () {    //sets the wordlength variable upon new game click and sets the html for gameplay
     userInputWordLength = document.getElementById("numberOfLetters").value; //gets value of user input text box
 
@@ -252,7 +278,7 @@ document.getElementById("newGame").onclick = function () {    //sets the wordlen
     gamePlay.innerHTML = html;  //injects the html into the gameplay section
     lettersGuessed = []
     masterIncorrectLetters = []
-    incorrectLetters =[]
+    incorrectLetters = []
     let tempUserInputLetterArray = [];
     let tempUserInputJSON = new Map();
     let tempUserInputString = tempUserInputLetterArray.join()
@@ -283,10 +309,15 @@ function fetchData(url) { // Will use this as a general fetch -ex: dictionary de
 // fetchData(`https://dictionaryapi.com/api/v3/references/collegiate/json/${word}?key=${apiKey}`) //fetch for dictionary definition
 //     .then(data => generateDefinitionDisplay(data))
 
-function generateDefinitionDisplay(data) {  //displays the dictionary definition
+function generateDefinitionDisplay(data, wordFullyGuessed, userInputString) {  //displays the dictionary definition
     //console.log(data);
     if (data[0] || data[0].shortdef[0]) {    //checks to make sure a valid definition came through and not suggestions     
-        definitionApiWord.innerHTML = "I'm not saying this is your word, but it could be: " + word; //data[0].hwi.hw;  // + " " + data[0].shortdef[0]; //word
+        if (wordFullyGuessed == true) {
+            definitionApiWord.innerHTML = `Your word is ${userInputString}:`
+        } else {
+            definitionApiWord.innerHTML = "I'm not saying this is your word, but it could be: " + word; //data[0].hwi.hw;  // + " " + data[0].shortdef[0]; //word
+
+        }
         let listOfDefinitions = "";
         for (let i = 0; i < data[0].shortdef.length; i++) { listOfDefinitions += i + 1 + ".) " + data[0].shortdef[i] + " " }
         definitionApiDefinitions.innerHTML = "Definition: " + listOfDefinitions;
@@ -306,15 +337,25 @@ function checkStatus(response) {
 
 }
 
-function statsInfo() {
+function statsInfo(userInputString) {
+
+    let numberOfLettersGivenByUser = 0;
+    for (i = 0; i < userInputString.length; i++) {
+        var letterCheck = /^[a-zA-Z]+$/; //only alpha
+        if (letterCheck.test(userInputString[i])) {  //Returns a Boolean value that indicates whether or not a pattern exists in a searched string.
+            numberOfLettersGivenByUser += 1;
+        }
+    }
+
     let stats = '<div >'
     stats += `<p> Your word is ${userInputWordLength} letters long.</p>` +
 
-        `<p> You have provided me ${userInputWordLength} letters .</p>`
+        `<p> You have provided me ${numberOfLettersGivenByUser} of the ${userInputWordLength} letters .</p>`
 
     if (masterIncorrectLetters.length != incorrectLetters.length) {
         stats += "You changed your mind on on a letter. That's ok... but the stats might be slightly off"
     }
+
 
     stats += `<p> I have guessed ${lettersGuessed.length} time(s) and they are ${lettersGuessed}.</p>` +
         `<p> I have guessed incorrectly ${incorrectLetters.length} time(s) given that you've said the following letters are incorrect: ${incorrectLetters}</p>` +
