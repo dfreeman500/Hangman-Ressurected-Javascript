@@ -179,6 +179,7 @@ function analyzeWords(userWordLength, userInputIndexed, userInputString, userInp
             console.log(err.message);
         }
     };
+    statsInfo(userInputString)    
 }
 
 //Controls the message in the message box, let vs var  messageToUser will reduce repetition
@@ -291,6 +292,7 @@ document.getElementById("newGame").onclick = function () {    //sets the wordlen
     // console.log(tempUserInputLetterArray, tempUserInputLetterArray,tempUserInputSet, tempUserInputJSON )
     analyzeWords(userInputWordLength, tempUserInputJSON, tempUserInputString, tempUserInputLetterArray, tempUserInputSet)
 
+
     document.getElementById("submitLettersButton").onclick = function () {
         console.log("Submit was clicked")
         incorrectLetters = []
@@ -339,6 +341,7 @@ function checkStatus(response) {
 
 function statsInfo(userInputString) {
 
+    //determines number of leters given by the user
     let numberOfLettersGivenByUser = 0;
     for (i = 0; i < userInputString.length; i++) {
         var letterCheck = /^[a-zA-Z]+$/; //only alpha
@@ -346,6 +349,24 @@ function statsInfo(userInputString) {
             numberOfLettersGivenByUser += 1;
         }
     }
+
+    //determines estimated errors in candidateWords
+    let listOfErrorNumbers=[]
+    let totalErrors;
+    for (let i=0; i < candidateWords.length; i++){
+        listOfErrorNumbers.push(candidateWords[i].Errors)
+        totalErrors+=candidateWords[i].Errors
+    }
+
+    //sums the errors to get the average later
+    var sum = listOfErrorNumbers.reduce(function(a, b){
+        return a + b;
+    }, 0);
+
+    console.log("this is the list of errors:", listOfErrorNumbers)
+    console.log("math max:", Math.max(...listOfErrorNumbers))
+    console.log("total errors:", sum)
+
 
     let stats = '<div >'
     stats += `<p> Your word is ${userInputWordLength} letters long.</p>` +
@@ -359,8 +380,8 @@ function statsInfo(userInputString) {
 
     stats += `<p> I have guessed ${lettersGuessed.length} time(s) and they are ${lettersGuessed}.</p>` +
         `<p> I have guessed incorrectly ${incorrectLetters.length} time(s) given that you've said the following letters are incorrect: ${incorrectLetters}</p>` +
-        `<p> At the present time, I feel 100% confident that I will guess your word in X or fewer errors</p>` +
-        `<p> At the present time I feel that I will likely guess your word using X or fewer errors </p>` +
+        `<p> At the present time, I feel 100% confident that I will guess your word in ${Math.max(...listOfErrorNumbers)} or fewer errors</p>` +
+        `<p> At the present time I feel that I will likely guess your word using ${Math.ceil(sum/candidateWords.length)} or fewer errors </p>` +
         '</div>'
     statsBox.innerHTML = stats;
 }
