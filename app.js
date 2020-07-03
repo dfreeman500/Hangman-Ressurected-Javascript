@@ -20,7 +20,19 @@ var letterFrequency = []
 var userInputWordLength;
 let listOfWords = []
 
+// function hangmanStartup(){
+//     let alphabet = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
+// var html = "this is it";
+// gamePlay.innerHTML = html;  //injects the html into the gameplay section
 
+// while(html != "h"){
+
+//     setTimeout(() => {  html = alphabet[Math.floor(Math.random() * alphabet.length)]}, 250);
+//     gamePlay.innerHTML = html;  //injects the html into the gameplay section
+
+// }
+// }
+// hangmanStartup()
 
 //finds all of the letters in the possible words and counts them, returns an array of letters presented in frequency order w/o counts
 function countLetters(string) {
@@ -397,34 +409,46 @@ function waterfalls(candidateWords, eliminatedWords) {
     let candidateWordsVariable
     if (candidateWords != null) {
         for (let i = 0; i < candidateWords.length; i++) {
+
             candidateWordsVariable += `<a id=${candidateWords[i].Word} href=#>${candidateWords[i].Word}</a>`
             candidateWordsVariable += " "
-            try {
-                document.getElementById("candidateWords[i].Word").onclick = function () {
-                    console.log("A word was clicked")
+            //append child //create element     
+            // https://developer.mozilla.org/en-US/docs/Web/API/Node/appendChild
+        }
+        UpperWaterfall.innerHTML = candidateWordsVariable;
+        for (let i = 0; i < candidateWords.length; i++) {
 
+            try {
+                document.getElementById(candidateWords[i].Word).onclick = function () {
                     fetchData(`https://dictionaryapi.com/api/v3/references/collegiate/json/${candidateWords[i].Word}?key=${apiKey}`) //fetch for dictionary definition
                         .then(data => generateDefinitionDisplay(data))
-
-                        console.log("A word was clicked")
                 }
             }
             catch (err) {
                 console.log(err.message);
             }
-
         }
-        UpperWaterfall.innerHTML = candidateWordsVariable;
     }
 
     let eliminatedWordsVariable
     if (eliminatedWords != null) {
         for (let i = 0; i < eliminatedWords.length; i++) {
-            eliminatedWordsVariable += `<a href="">${eliminatedWords[i].Word}</a>`
+            eliminatedWordsVariable += `<a id=${eliminatedWords[i].Word} href=#>${eliminatedWords[i].Word}</a>`
             eliminatedWordsVariable += " "
         }
         LowerWaterfall.innerHTML = eliminatedWordsVariable;
-    }
+        for (let i = 0; i < eliminatedWords.length; i++) {
 
+            try {
+                document.getElementById(eliminatedWords[i].Word).onclick = function () {
+                    fetchData(`https://dictionaryapi.com/api/v3/references/collegiate/json/${eliminatedWords[i].Word}?key=${apiKey}`) //fetch for dictionary definition
+                        .then(data => generateDefinitionDisplay(data))
+                }
+            }
+            catch (err) {
+                console.log(err.message);
+            }
+        }
+    }
 }
 
