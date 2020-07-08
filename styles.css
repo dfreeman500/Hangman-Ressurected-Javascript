@@ -2,6 +2,10 @@
     background-color: black;
 } */
 
+.background{
+    background-color:lightgrey;
+}
+
 .name{
     border: 1px solid blue;
     text-align: center;
@@ -34,32 +38,43 @@
 }
 .StatsBox{
     border: 1px solid blueviolet;
-    min-width: 20%;
+    min-width: 25%;
+    max-width: 25%;
 
 }
 .CentralBox{
     border: 1px solid orangered;
 min-width: 50%;
+max-width: 50%;
 min-height: auto;
 }
 .UpperWaterfall{
     border: 1px solid brown;
+    max-height: 400px;
 
 }
 .gamePlay{
     border: 1px solid grey;
     min-height: 200px;
     display:flex;
+    flex-direction: column;
 
+}
+.containsLetters{
+    display:flex;
+}
+.submitLettersButton{
+    vertical-align: auto;
 }
 
 .letterBox{
-    max-width: 40px;
+    max-width: 20px;
 
 }
 
 .LowerWaterfall{
     border: 1px solid red;
+    min-height: 400px;
 
 }
 
@@ -70,6 +85,8 @@ min-height: 300px;
 
 
 .definitionApiBox {
+    min-width: 25%;
+    max-width: 25%;
     border: 1px solid red;
     text-align: left;
     display: flex;
