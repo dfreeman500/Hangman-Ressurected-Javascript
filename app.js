@@ -17,6 +17,8 @@ var lettersGuessed = []
 var incorrectLetters = []
 var letterFrequency = []
 
+
+
 var userInputWordLength;
 let listOfWords = []
 
@@ -286,6 +288,7 @@ document.getElementById("newGame").onclick = function () {    //sets the wordlen
 
     //builds the form that user will use to input responses
     var html = "";
+    html += '<div class="containsLetters">'
     for (var i = 0; i < userInputWordLength; i++) {
         html +=
             '<div class="letterBox" >' +
@@ -293,7 +296,8 @@ document.getElementById("newGame").onclick = function () {    //sets the wordlen
             `<input type="text" id="${i}"  maxlength="1">` +
             '</div>'
     }
-    html += '<button type="button" id="submitLettersButton">Submit</button>' + '</form>';
+    html += '</div>'
+    html += '<button type="button" id="submitLettersButton">Add letters if appropriate and then submit</button>' + '</form>';
     gamePlay.innerHTML = html;  //injects the html into the gameplay section
     lettersGuessed = []
     masterIncorrectLetters = []
@@ -405,6 +409,15 @@ function statsInfo(userInputString) {
 }
 
 
+function wordLenthValidator() {
+
+}
+
+function letterInputValidator(userLetter) {
+    return /[a-z]/.test(userLetter)
+}
+
+
 function waterfalls(candidateWords, eliminatedWords) {
     let candidateWordsVariable
     if (candidateWords != null) {
@@ -419,6 +432,8 @@ function waterfalls(candidateWords, eliminatedWords) {
         for (let i = 0; i < candidateWords.length; i++) {
 
             try {
+                //create single function and call - DRY
+
                 document.getElementById(candidateWords[i].Word).onclick = function () {
                     fetchData(`https://dictionaryapi.com/api/v3/references/collegiate/json/${candidateWords[i].Word}?key=${apiKey}`) //fetch for dictionary definition
                         .then(data => generateDefinitionDisplay(data))
@@ -440,6 +455,7 @@ function waterfalls(candidateWords, eliminatedWords) {
         for (let i = 0; i < eliminatedWords.length; i++) {
 
             try {
+
                 document.getElementById(eliminatedWords[i].Word).onclick = function () {
                     fetchData(`https://dictionaryapi.com/api/v3/references/collegiate/json/${eliminatedWords[i].Word}?key=${apiKey}`) //fetch for dictionary definition
                         .then(data => generateDefinitionDisplay(data))
