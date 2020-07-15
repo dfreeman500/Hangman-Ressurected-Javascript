@@ -112,12 +112,8 @@ function makeAGuess(arrayOfLettersByFrequency, userInputString) {
             console.log("This is my guess:", arrayOfLettersByFrequency[i])
             return theGuess = arrayOfLettersByFrequency[i]
         }
-
     }
 }
-
-
-
 
 //Determines which word is a candidate and which can be ruled out
 function analyzeWords(userWordLength, userInputString, incorrectLetters, masterIncorrectLetters) {
@@ -185,16 +181,9 @@ function analyzeWords(userWordLength, userInputString, incorrectLetters, masterI
     //console.log("this is a candidate word:", candidateWords[0].Word)
     console.log("this is alllettersfromvalidwords", allLettersFromValidWords)
     //console.log(countLetters(allLettersFromValidWords))
-
-
     incorrectLetters;
     masterIncorrectLetters;
-
-
     return { candidateWords, eliminatedWords, allLettersFromValidWords, wordFullyGuessed, incorrectLetters, masterIncorrectLetters }
-
-
-
 }
 
 //Controls the message in the message box, let vs var  messageToUser will reduce repetition
@@ -206,7 +195,6 @@ function messages(info, userInputString, candidateWords) {
             `<h1><p> I have guessed your word. It is ${userInputString}</p></h1>` +
             '</div>'
         message.innerHTML = messageToUser;
-
     } else if (candidateWords.length == 0) {
         console.log("The info was undefined", info)
         let messageToUser =
@@ -217,13 +205,19 @@ function messages(info, userInputString, candidateWords) {
     }
     else if (info == false) {
         console.log("The messages function ran down here", info, userInputString, candidateWords)
-
         let messageToUser =
             '<div >' +
             `<h1><p> Please only give me lower case letters</p></h1>` +
             '</div>'
         message.innerHTML = messageToUser;
-    
+    } else if (info == "invalidWordLength") {
+        console.log("The messages function ran down here", info, userInputString, candidateWords)
+
+        let messageToUser =
+            '<div >' +
+            `<h1><p> It doesn't look like you have a real word in mind. Please give me a number above 0 and one that corresponds to the length of a real word</p></h1>` +
+            '</div>'
+        message.innerHTML = messageToUser;
     }
 
     else {
@@ -232,23 +226,18 @@ function messages(info, userInputString, candidateWords) {
             `<h1><p> Does your word have the letter ${info} ?</h1>`
         if (candidateWords != null) {
             console.log("It's not null")
-
         } else { console.log("it is null") }
 
         if (candidateWords != null && candidateWords.length == 1) {
             messageToUser += `<h1>Because I'm thinking your word is ... ${candidateWords[0].Word}.</h1>`
             console.log("this is what I'm trying to pring", candidateWords[0])
-
         }
         messageToUser += '</p></div>'
-
         message.innerHTML = messageToUser;
-
     }
-
 }
 
-
+//Takes multiple user inputs, checks for valid inputs, and generates the userInputString
 function compileUserInput(userInputWordLength) {
     var userInputString = "";
     if (firstRun == true) {
@@ -270,19 +259,12 @@ function compileUserInput(userInputWordLength) {
                 } else {
                     var value = false;
                     return messages(false, userInputString = "invalid", candidateWords)
-
-
                 }
             } else {
                 userInputString += " "
             }
             console.log("2 - userINputstring is now:", userInputString)
-
-
-
         }
-
-
     }
     console.log("user input in various forms", i, "userInputString:", userInputString, "userINputString length:", userInputString.length)
     candidateWords = []
@@ -312,11 +294,9 @@ function determineListOfIncorrectLetters(userInputString, incorrectLetters, mast
     return { incorrectLetters, masterIncorrectLetters }
 }
 
-
 function orderOfOperations(userInputString, incorrectLetters, masterIncorrectLetters, lettersGuessed, firstRun) {
     var { userInputString } = compileUserInput(userInputWordLength, firstRun);
     var { incorrectLetters, masterIncorrectLetters } = determineListOfIncorrectLetters(userInputString, incorrectLetters = [], masterIncorrectLetters = []);
-
     var { candidateWords, eliminatedWords, allLettersFromValidWords, wordFullyGuessed, incorrectLetters, masterIncorrectLetters } = analyzeWords(userInputWordLength, userInputString, incorrectLetters, masterIncorrectLetters)
     chooseDefinedWord(makeAGuess(countLetters(allLettersFromValidWords), userInputString))
     messages(theGuess, userInputString, candidateWords)
@@ -338,14 +318,25 @@ function orderOfOperations(userInputString, incorrectLetters, masterIncorrectLet
 
 }
 
-
-
-
-//Need to consolidate userinput... and tempUserInput... into single function
-
-document.getElementById("newGame").onclick = function () {    //sets the wordlength variable upon new game click and sets the html for gameplay
-    userInputWordLength = document.getElementById("numberOfLetters").value; //gets value of user input text box
-
+//Takes the user input (word length) and determines if this is going to be a valid word
+function wordLengthValidator(userInputWordLength) {
+    validWordLength = false;
+    //var wordLengthSet = new Set();
+    var testCondition = /^\d+$/; //only numerics
+    if (!testCondition.test(userInputWordLength)) {  //Returns a Boolean value that indicates whether or not a pattern exists in a searched string.
+        return validWordLength
+    }
+    for (let i = 0; i < hfWords.length; i++) {
+        //console.log(hfWords[i].WordLength)
+        if (userInputWordLength == hfWords[i].WordLength) {
+            validWordLength = true;
+            //console.log("break now")
+            return validWordLength;
+        }
+    }
+    return validWordLength;
+}
+function buildGamePlayBox(userInputWordLength) {
     //builds the form that user will use to input responses
     var html = "";
     html += '<div class="containsLetters">'
@@ -363,13 +354,20 @@ document.getElementById("newGame").onclick = function () {    //sets the wordlen
     var masterIncorrectLetters = []
     incorrectLetters = []
     var userInputString = "";
-    //var userInputLetterArray = []
-    var userInputSet = new Set();
-    // console.log(tempUserInputLetterArray, tempUserInputLetterArray,tempUserInputSet, tempUserInputJSON )
+    //var userInputSet = new Set();
+    return userInputString
+}
 
-    console.log("this is userInput String", userInputString)
-    orderOfOperations(userInputString, incorrectLetters, masterIncorrectLetters, lettersGuessed, firstRun = true)
 
+document.getElementById("newGame").onclick = function () {    //sets the wordlength variable upon new game click and sets the html for gameplay
+    userInputWordLength = document.getElementById("numberOfLetters").value; //gets value of user input text box
+
+    if (wordLengthValidator(userInputWordLength) == false) {
+        messages("invalidWordLength", userInputString = 0, candidateWords = 0)
+    } else {
+        userInputString = buildGamePlayBox(userInputWordLength)
+        orderOfOperations(userInputString, incorrectLetters, masterIncorrectLetters, lettersGuessed, firstRun = true)
+    }
     document.getElementById("submitLettersButton").onclick = function () {
         console.log("Submit was clicked")
         incorrectLetters = []
@@ -466,19 +464,12 @@ function statsInfo(userInputString, candidateWords, incorrectLetters, masterInco
     stats += `<p> I have guessed ${lettersGuessed.length} time(s) and they are ${lettersGuessed}.</p>` +
         `<p> I have guessed incorrectly ${incorrectLetters.length} time(s) given that you've said the following letters are incorrect: ${incorrectLetters}</p>` +
         `<p> At the present time, I feel 100% confident that I will guess your word in ${(Math.max(...listOfErrorNumbers) > incorrectLetters.length ? Math.max(...listOfErrorNumbers) : incorrectLetters.length)} or fewer errors</p>` +
-        `<p> At the present time I feel that I will likely guess your word using ${((Math.ceil(sum / candidateWords.length)) > incorrectLetters.length ? (Math.ceil(sum / candidateWords.length)) : incorrectLetters.length)} or fewer errors </p>` +
+        `<p> At the present time I feel that I will <b>likely</b> guess your word using ${((Math.ceil(sum / candidateWords.length)) > incorrectLetters.length ? (Math.ceil(sum / candidateWords.length)) : incorrectLetters.length)} or fewer errors </p>` +
         '</div>'
     statsBox.innerHTML = stats;
 }
 
 
-function wordLenthValidator() {
-
-}
-
-function letterInputValidator(userLetter) {
-    return /[a-z]/.test(userLetter)
-}
 
 
 function waterfalls(candidateWords, eliminatedWords) {
