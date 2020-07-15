@@ -8,13 +8,14 @@ const UpperWaterfall = document.querySelector('.UpperWaterfall');
 const LowerWaterfall = document.querySelector('.LowerWaterfall');
 
 
-let userInputJSON;
 let wordLists = [hfWords, bigWords]; //List of variable pointing to the different word lists
 var candidateWords = []
 let eliminatedWords = []
 
 var lettersGuessed = []
 var incorrectLetters = []
+var masterIncorrectLetters = []
+
 var letterFrequency = []
 
 
@@ -107,32 +108,30 @@ function makeAGuess(arrayOfLettersByFrequency, userInputString) {
             lettersGuessed.push(arrayOfLettersByFrequency[i])
             console.log("This is the letters guessed array:", lettersGuessed)
             console.log("This is the incorrectLetters array:", incorrectLetters, " length: ", incorrectLetters.length)
-            console.log("This is the masterIncorrectLetters array:", masterIncorrectLetters, " length: ", masterIncorrectLetters.length)
+            //console.log("This is the masterIncorrectLetters array:", masterIncorrectLetters, " length: ", masterIncorrectLetters.length)
             console.log("This is my guess:", arrayOfLettersByFrequency[i])
-            var theGuess = arrayOfLettersByFrequency[i]
-            chooseDefinedWord(theGuess)
-            break;
+            return theGuess = arrayOfLettersByFrequency[i]
         }
+
     }
-    messages(theGuess, userInputString, candidateWords)
 }
 
 
 
 
 //Determines which word is a candidate and which can be ruled out
-function analyzeWords(userWordLength, userInputIndexed, userInputString, userInputLetterArray, userInputSet) {
-    console.log("inside analyze words function: userWordLength:", userWordLength, "userInputString", userInputString, "userInputLetterArray", userInputIndexed, "userInputSet", userInputSet)
+function analyzeWords(userWordLength, userInputString, incorrectLetters, masterIncorrectLetters) {
+    //console.log("inside analyze words function: userWordLength:", userWordLength, "userInputString", userInputString, "userInputLetterArray", userInputIndexed, "userInputSet", userInputSet)
     allLettersFromValidWords = []
     letterFrequency = []
     var wordFullyGuessed = false;
-
+    //userInputString = "phone";
     //Consider using filter method here????
     for (i = 0; i < hfWords.length; i++) {
         var isCandidateWord = true;
         if (hfWords[i].WordLength == userWordLength) {
-            for (j = 0; j < userWordLength; j++) { //iterates through each possible word to find candidate
-                if (userInputIndexed[j] === " " || userInputIndexed[j] == hfWords[i].IndexLetter[j]) {
+            for (let j = 0; j < userWordLength; j++) { //iterates through each possible word to find candidate
+                if (userInputString[j] === " " || userInputString[j] == hfWords[i].Word[j]) {
                     //console.log(isCandidateWord)
                 } else {
                     isCandidateWord = false;
@@ -140,12 +139,12 @@ function analyzeWords(userWordLength, userInputIndexed, userInputString, userInp
                 }
 
                 //Elminates words that have letter within the userInputString but in the wrong location || "b","u","l"," "  should eliminate "b","u","l","l"
-                if (userInputIndexed[j] === " " && userInputString.includes(hfWords[i].IndexLetter[j])) {
+                if (userInputString[j] === " " && userInputString.includes(hfWords[i].Word[j])) {
                     isCandidateWord = false;
                     break;
                 }
 
-                // if the possible candidate has letters in the incorrectLetters then isCandidate= false
+                // if the possible candidate has letters in the incorrectLetters then isCandidateWord= false
                 for (k = 0; k < incorrectLetters.length; k++) {
                     if (!hfWords[i].Word.includes(incorrectLetters[k])) {
                         // console.log(!lettersGuessed.includes(userInputSet[i]))
@@ -154,6 +153,10 @@ function analyzeWords(userWordLength, userInputIndexed, userInputString, userInp
                         break;
                     }
                 }
+                incorrectLetters;
+                masterIncorrectLetters;
+                candidateWords;
+                eliminatedWords;
             }
 
             //If the word is a candidate, add it to the candidate list and add the set of letters to the letter list
@@ -180,30 +183,23 @@ function analyzeWords(userWordLength, userInputIndexed, userInputString, userInp
     console.log("this is candidate words: ", candidateWords);
     console.log("this is eliminated words: ", eliminatedWords);
     //console.log("this is a candidate word:", candidateWords[0].Word)
-    console.log("this is alllettersfromvalidword", allLettersFromValidWords)
+    console.log("this is alllettersfromvalidwords", allLettersFromValidWords)
     //console.log(countLetters(allLettersFromValidWords))
 
 
-    waterfalls(candidateWords, eliminatedWords)
+    incorrectLetters;
+    masterIncorrectLetters;
 
-    if (wordFullyGuessed == false) {
-        makeAGuess(countLetters(allLettersFromValidWords), userInputString)
-    } else {
-        messages(wordFullyGuessed, userInputString, candidateWords)
-        try {
 
-            fetchData(`https://dictionaryapi.com/api/v3/references/collegiate/json/${userInputString}?key=${apiKey}`) //fetch for dictionary definition
-                .then(data => generateDefinitionDisplay(data, wordFullyGuessed, userInputString))
-        }
-        catch (err) {
-            console.log(err.message);
-        }
-    };
-    statsInfo(userInputString)
+    return { candidateWords, eliminatedWords, allLettersFromValidWords, wordFullyGuessed, incorrectLetters, masterIncorrectLetters }
+
+
+
 }
 
 //Controls the message in the message box, let vs var  messageToUser will reduce repetition
 function messages(info, userInputString, candidateWords) {
+    console.log("The messages function ran", info, userInputString, candidateWords)
     if (info == true) {
         let messageToUser =
             '<div >' +
@@ -211,15 +207,25 @@ function messages(info, userInputString, candidateWords) {
             '</div>'
         message.innerHTML = messageToUser;
 
-    } else if (info == null) {
+    } else if (candidateWords.length == 0) {
         console.log("The info was undefined", info)
         let messageToUser =
             '<div >' +
             `<h1><p> Something went Wrong!! Are you sure you told me the correct letters. Look over the letters I've already guessed to make sure. Are you having me guess a real word?</p></h1>` +
             '</div>'
         message.innerHTML = messageToUser;
-
     }
+    else if (info == false) {
+        console.log("The messages function ran down here", info, userInputString, candidateWords)
+
+        let messageToUser =
+            '<div >' +
+            `<h1><p> Please only give me lower case letters</p></h1>` +
+            '</div>'
+        message.innerHTML = messageToUser;
+    
+    }
+
     else {
         let messageToUser =
             '<div >' +
@@ -239,46 +245,100 @@ function messages(info, userInputString, candidateWords) {
         message.innerHTML = messageToUser;
 
     }
-    statsInfo(userInputString);
 
 }
 
 
-function getUserInput() {
+function compileUserInput(userInputWordLength) {
     var userInputString = "";
-    var userInputLetterArray = []
-    var userInputSet = new Set();
-    for (i = 0; i < userInputWordLength; i++) {
-        let letterInput = document.getElementById(i).value
-        if (letterInput != "") {
-            userInputString += letterInput
-        } else {
-            userInputString += " "
+    if (firstRun == true) {
+        console.log("The firstRun is true - first run for start of game")
+        for (i = 0; i < userInputWordLength; i++) {
+            userInputString += " ";
+            //userInputSet.add(userInputString[i]);
         }
-    }
-    //console.log("this is the input string", userInputString);
+        firstRun = false;
+        console.log("1userINputstring is now:", userInputString, userInputString.length)
+    } else {
+        for (i = 0; i < userInputWordLength; i++) {
+            let letterInput = document.getElementById(i).value
+            if (letterInput != "") {
+                userInputString += letterInput
+                var letterCheck = /^[a-z]+$/; //checks each letterInput to make sure it is lower case and alpha and lower case
+                if (letterCheck.test(letterInput)) {  //Returns a Boolean value that indicates whether or not a pattern exists in a searched string.
+                    var value = true
+                } else {
+                    var value = false;
+                    return messages(false, userInputString = "invalid", candidateWords)
 
-    userInputJSON = new Map();
-    for (i = 0; i < userInputWordLength; i++) {
-        userInputJSON[i] = userInputString[i]
-        userInputLetterArray.push(userInputString[i])
-        userInputSet.add(userInputString[i]);
+
+                }
+            } else {
+                userInputString += " "
+            }
+            console.log("2 - userINputstring is now:", userInputString)
+
+
+
+        }
+
+
     }
-    userInputSet.add(userInputLetterArray);
-    console.log("user input in various forms", i, userInputJSON, userInputString, userInputLetterArray, userInputSet)
+    console.log("user input in various forms", i, "userInputString:", userInputString, "userINputString length:", userInputString.length)
     candidateWords = []
     eliminatedWords = []
 
+
+    console.log("This should be exiting")
+    return { userInputString }
+}
+
+function determineListOfIncorrectLetters(userInputString, incorrectLetters, masterIncorrectLetters) {
+    incorrectLetters;
+    masterIncorrectLetters;
     for (i = 0; i < lettersGuessed.length; i++) {
         if (!userInputString.includes(lettersGuessed[i]) && !incorrectLetters.includes(lettersGuessed[i])) {
             incorrectLetters.push(lettersGuessed[i])
         }
-        if (!userInputString.includes(lettersGuessed[i]) && !masterIncorrectLetters.includes(lettersGuessed[i])) {
-            masterIncorrectLetters.push(lettersGuessed[i])
+        try {
+            if (!userInputString.includes(lettersGuessed[i]) && !masterIncorrectLetters.includes(lettersGuessed[i])) {
+                masterIncorrectLetters.push(lettersGuessed[i])
+            }
+        }
+        catch (err) {
+            console.log(err.message);
         }
     }
-    analyzeWords(userInputWordLength, userInputJSON, userInputString, userInputLetterArray, userInputSet)
+    return { incorrectLetters, masterIncorrectLetters }
 }
+
+
+function orderOfOperations(userInputString, incorrectLetters, masterIncorrectLetters, lettersGuessed, firstRun) {
+    var { userInputString } = compileUserInput(userInputWordLength, firstRun);
+    var { incorrectLetters, masterIncorrectLetters } = determineListOfIncorrectLetters(userInputString, incorrectLetters = [], masterIncorrectLetters = []);
+
+    var { candidateWords, eliminatedWords, allLettersFromValidWords, wordFullyGuessed, incorrectLetters, masterIncorrectLetters } = analyzeWords(userInputWordLength, userInputString, incorrectLetters, masterIncorrectLetters)
+    chooseDefinedWord(makeAGuess(countLetters(allLettersFromValidWords), userInputString))
+    messages(theGuess, userInputString, candidateWords)
+
+    if (wordFullyGuessed == true) {
+        messages(wordFullyGuessed, userInputString, candidateWords)
+        try {
+
+            fetchData(`https://dictionaryapi.com/api/v3/references/collegiate/json/${userInputString}?key=${apiKey}`) //fetch for dictionary definition
+                .then(data => generateDefinitionDisplay(data, wordFullyGuessed, userInputString))
+        }
+        catch (err) {
+            console.log(err.message);
+        }
+    };
+    console.log("after analyze words", "userInputString:", userInputString, "userINputString length:", userInputString.length)
+    waterfalls(candidateWords, eliminatedWords)
+    statsInfo(userInputString, candidateWords, incorrectLetters, masterIncorrectLetters)
+
+}
+
+
 
 
 //Need to consolidate userinput... and tempUserInput... into single function
@@ -300,25 +360,21 @@ document.getElementById("newGame").onclick = function () {    //sets the wordlen
     html += '<button type="button" id="submitLettersButton">Add letters if appropriate and then submit</button>' + '</form>';
     gamePlay.innerHTML = html;  //injects the html into the gameplay section
     lettersGuessed = []
-    masterIncorrectLetters = []
+    var masterIncorrectLetters = []
     incorrectLetters = []
-    let tempUserInputLetterArray = [];
-    let tempUserInputJSON = new Map();
-    let tempUserInputString = tempUserInputLetterArray.join()
-    let tempUserInputSet = new Set();
-    for (let i = 0; i < userInputWordLength; i++) {
-        tempUserInputLetterArray.push(" ");
-        tempUserInputJSON[i] = " "
-        tempUserInputSet.add(" ")
-    }
+    var userInputString = "";
+    //var userInputLetterArray = []
+    var userInputSet = new Set();
     // console.log(tempUserInputLetterArray, tempUserInputLetterArray,tempUserInputSet, tempUserInputJSON )
-    analyzeWords(userInputWordLength, tempUserInputJSON, tempUserInputString, tempUserInputLetterArray, tempUserInputSet)
 
+    console.log("this is userInput String", userInputString)
+    orderOfOperations(userInputString, incorrectLetters, masterIncorrectLetters, lettersGuessed, firstRun = true)
 
     document.getElementById("submitLettersButton").onclick = function () {
         console.log("Submit was clicked")
         incorrectLetters = []
-        getUserInput();
+        masterIncorrectLetters
+        orderOfOperations(userInputString, incorrectLetters, masterIncorrectLetters, lettersGuessed, firstRun = false)
     }
 }
 
@@ -361,8 +417,9 @@ function checkStatus(response) {
 
 }
 
-function statsInfo(userInputString) {
-
+function statsInfo(userInputString, candidateWords, incorrectLetters, masterIncorrectLetters) {
+    masterIncorrectLetters;
+    incorrectLetters;
     //determines number of leters given by the user
     let numberOfLettersGivenByUser = 0;
     for (i = 0; i < userInputString.length; i++) {
@@ -393,17 +450,23 @@ function statsInfo(userInputString) {
     let stats = '<div >'
     stats += `<p> Your word is ${userInputWordLength} letters long.</p>` +
 
-        `<p> You have provided me ${numberOfLettersGivenByUser} of the ${userInputWordLength} letters .</p>`
+        `<p> You have provided me ${numberOfLettersGivenByUser} of the ${userInputWordLength} letters: ${userInputString}</p>`
 
+    // try {
     if (masterIncorrectLetters.length != incorrectLetters.length) {
         stats += "You changed your mind on on a letter. That's ok... but the stats might be slightly off"
     }
 
+    // } catch (err) {
+    //     console.log(err.message);
+    // }
+
+
 
     stats += `<p> I have guessed ${lettersGuessed.length} time(s) and they are ${lettersGuessed}.</p>` +
         `<p> I have guessed incorrectly ${incorrectLetters.length} time(s) given that you've said the following letters are incorrect: ${incorrectLetters}</p>` +
-        `<p> At the present time, I feel 100% confident that I will guess your word in ${Math.max(...listOfErrorNumbers)} or fewer errors</p>` +
-        `<p> At the present time I feel that I will likely guess your word using ${Math.ceil(sum / candidateWords.length)} or fewer errors </p>` +
+        `<p> At the present time, I feel 100% confident that I will guess your word in ${(Math.max(...listOfErrorNumbers) > incorrectLetters.length ? Math.max(...listOfErrorNumbers) : incorrectLetters.length)} or fewer errors</p>` +
+        `<p> At the present time I feel that I will likely guess your word using ${((Math.ceil(sum / candidateWords.length)) > incorrectLetters.length ? (Math.ceil(sum / candidateWords.length)) : incorrectLetters.length)} or fewer errors </p>` +
         '</div>'
     statsBox.innerHTML = stats;
 }
@@ -427,6 +490,9 @@ function waterfalls(candidateWords, eliminatedWords) {
             candidateWordsVariable += " "
             //append child //create element     
             // https://developer.mozilla.org/en-US/docs/Web/API/Node/appendChild
+            if (i > 300) {
+                break
+            }
         }
         UpperWaterfall.innerHTML = candidateWordsVariable;
         for (let i = 0; i < candidateWords.length; i++) {
@@ -441,6 +507,9 @@ function waterfalls(candidateWords, eliminatedWords) {
             }
             catch (err) {
                 console.log(err.message);
+            }
+            if (i > 300) {
+                break
             }
         }
     }
