@@ -51,6 +51,9 @@ min-height: auto;
 .UpperWaterfall{
     border: 1px solid brown;
     max-height: 400px;
+    overflow:hidden;
+
+
 
 }
 .gamePlay{
@@ -58,10 +61,16 @@ min-height: auto;
     min-height: 200px;
     display:flex;
     flex-direction: column;
+    text-align:center;
+    margin: auto;
 
 }
 .containsLetters{
     display:flex;
+    text-align:center;
+    margin: auto;
+
+
 }
 .submitLettersButton{
     vertical-align: auto;
