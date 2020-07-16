@@ -94,7 +94,7 @@ function chooseDefinedWord(theGuess) {
         randomNumber = Math.floor(Math.random() * focusCandidateWords.length);
         word = focusCandidateWords[randomNumber].Word;
         fetchData(`https://dictionaryapi.com/api/v3/references/collegiate/json/${word}?key=${apiKey}`) //fetch for dictionary definition
-            .then(data => generateDefinitionDisplay(data))
+            .then(data => generateDefinitionDisplay(data, word))
     }
     catch (err) {
         console.log(err.message);
@@ -306,7 +306,7 @@ function orderOfOperations(userInputString, incorrectLetters, masterIncorrectLet
         try {
 
             fetchData(`https://dictionaryapi.com/api/v3/references/collegiate/json/${userInputString}?key=${apiKey}`) //fetch for dictionary definition
-                .then(data => generateDefinitionDisplay(data, wordFullyGuessed, userInputString))
+                .then(data => generateDefinitionDisplay(data, userInputString, wordFullyGuessed, userInputString))
         }
         catch (err) {
             console.log(err.message);
@@ -336,7 +336,7 @@ function wordLengthValidator(userInputWordLength) {
     }
     return validWordLength;
 }
-function buildGamePlayBox(userInputWordLength) {
+function buildGamePlayBox(userInputWordLength, theGuess) {
     //builds the form that user will use to input responses
     var html = "";
     html += '<div class="containsLetters">'
@@ -345,28 +345,45 @@ function buildGamePlayBox(userInputWordLength) {
             '<div class="letterBox" >' +
             `<form >` +
             `<input type="text" id="${i}"  maxlength="1">` +
-            '</div>'
+            '</div>' 
+            // '<div class="buttonAddLetter">' +
+            // `<button type="button" id="b${i}" onclick= "() { function
+            //     document.getElementById("b${i}").value = "j";
+            //   }">${theGuess}</button>` +
+
+        '</div>'
+        
+        // document.getElementById(`b${i}`).onclick = function () {
+        //     console.log("it works") 
+        //     fetchData(`https://dictionaryapi.com/api/v3/references/collegiate/json/race?key=${apiKey}`) //fetch for dictionary definition
+        //     .then(data => generateDefinitionDisplay(data, "race"))
+        // }
     }
     html += '</div>'
     html += '<button type="button" id="submitLettersButton">Add letters if appropriate and then submit</button>' + '</form>';
     gamePlay.innerHTML = html;  //injects the html into the gameplay section
+    // for (var i = 0; i < userInputWordLength; i++) {
+    //     document.getElementById(`${i}`).value = "j";
+    // }
     lettersGuessed = []
     var masterIncorrectLetters = []
     incorrectLetters = []
-    var userInputString = "";
     //var userInputSet = new Set();
-    return userInputString
 }
 
 
 document.getElementById("newGame").onclick = function () {    //sets the wordlength variable upon new game click and sets the html for gameplay
     userInputWordLength = document.getElementById("numberOfLetters").value; //gets value of user input text box
+    var userInputString = "";
+    incorrectLetters = []
+    masterIncorrectLetters=[]
 
     if (wordLengthValidator(userInputWordLength) == false) {
         messages("invalidWordLength", userInputString = 0, candidateWords = 0)
     } else {
-        userInputString = buildGamePlayBox(userInputWordLength)
         orderOfOperations(userInputString, incorrectLetters, masterIncorrectLetters, lettersGuessed, firstRun = true)
+        userInputString = buildGamePlayBox(userInputWordLength, theGuess)
+
     }
     document.getElementById("submitLettersButton").onclick = function () {
         console.log("Submit was clicked")
@@ -387,11 +404,11 @@ function fetchData(url) { // Will use this as a general fetch -ex: dictionary de
 // fetchData(`https://dictionaryapi.com/api/v3/references/collegiate/json/${word}?key=${apiKey}`) //fetch for dictionary definition
 //     .then(data => generateDefinitionDisplay(data))
 
-function generateDefinitionDisplay(data, wordFullyGuessed, userInputString) {  //displays the dictionary definition
-    //console.log(data);
+function generateDefinitionDisplay(data, word, wordFullyGuessed, userInputString) {  //displays the dictionary definition
+    console.log(data);
     if (data[0] || data[0].shortdef[0]) {    //checks to make sure a valid definition came through and not suggestions     
         if (wordFullyGuessed == true) {
-            definitionApiWord.innerHTML = `Your word is ${userInputString}:`
+            definitionApiWord.innerHTML = `Your word is ${word}:`
         } else {
             definitionApiWord.innerHTML = "I'm not saying this is your word, but it could be: " + word; //data[0].hwi.hw;  // + " " + data[0].shortdef[0]; //word
 
@@ -446,25 +463,21 @@ function statsInfo(userInputString, candidateWords, incorrectLetters, masterInco
 
 
     let stats = '<div >'
-    stats += `<p> Your word is ${userInputWordLength} letters long.</p>` +
+    stats += `<p> Your word is <b> ${userInputWordLength} </b> letters long.</p>` +
 
-        `<p> You have provided me ${numberOfLettersGivenByUser} of the ${userInputWordLength} letters: ${userInputString}</p>`
+        `<p> You have provided me <b> ${numberOfLettersGivenByUser} </b> of the <b> ${userInputWordLength} </b> letters: <b> ${userInputString} </b></p>`
 
     // try {
     if (masterIncorrectLetters.length != incorrectLetters.length) {
         stats += "You changed your mind on on a letter. That's ok... but the stats might be slightly off"
     }
-
     // } catch (err) {
     //     console.log(err.message);
     // }
-
-
-
-    stats += `<p> I have guessed ${lettersGuessed.length} time(s) and they are ${lettersGuessed}.</p>` +
-        `<p> I have guessed incorrectly ${incorrectLetters.length} time(s) given that you've said the following letters are incorrect: ${incorrectLetters}</p>` +
-        `<p> At the present time, I feel 100% confident that I will guess your word in ${(Math.max(...listOfErrorNumbers) > incorrectLetters.length ? Math.max(...listOfErrorNumbers) : incorrectLetters.length)} or fewer errors</p>` +
-        `<p> At the present time I feel that I will <b>likely</b> guess your word using ${((Math.ceil(sum / candidateWords.length)) > incorrectLetters.length ? (Math.ceil(sum / candidateWords.length)) : incorrectLetters.length)} or fewer errors </p>` +
+    stats += `<p> I have guessed <b> ${lettersGuessed.length} </b> time(s) and they are <b> ${lettersGuessed} </b>.</p>` +
+        `<p> I have guessed incorrectly <b> ${incorrectLetters.length} </b> time(s) given that you've said the following letters are incorrect:<b> ${incorrectLetters}</b></p>` +
+        `<p> At the present time, I feel VERY confident that I will guess your word in <b> ${(Math.max(...listOfErrorNumbers) > incorrectLetters.length ? Math.max(...listOfErrorNumbers) : incorrectLetters.length)}</b> or fewer errors</p>` +
+        `<p> At the present time I feel that I will <b>likely</b> guess your word using <b> ${((Math.ceil(sum / candidateWords.length)) > incorrectLetters.length ? (Math.ceil(sum / candidateWords.length)) : incorrectLetters.length)} </b> or fewer errors </p>` +
         '</div>'
     statsBox.innerHTML = stats;
 }
@@ -473,7 +486,7 @@ function statsInfo(userInputString, candidateWords, incorrectLetters, masterInco
 
 
 function waterfalls(candidateWords, eliminatedWords) {
-    let candidateWordsVariable
+    let candidateWordsVariable = "";
     if (candidateWords != null) {
         for (let i = 0; i < candidateWords.length; i++) {
 
@@ -493,7 +506,7 @@ function waterfalls(candidateWords, eliminatedWords) {
 
                 document.getElementById(candidateWords[i].Word).onclick = function () {
                     fetchData(`https://dictionaryapi.com/api/v3/references/collegiate/json/${candidateWords[i].Word}?key=${apiKey}`) //fetch for dictionary definition
-                        .then(data => generateDefinitionDisplay(data))
+                        .then(data => generateDefinitionDisplay(data, candidateWords[i].Word))
                 }
             }
             catch (err) {
@@ -503,9 +516,10 @@ function waterfalls(candidateWords, eliminatedWords) {
                 break
             }
         }
+
     }
 
-    let eliminatedWordsVariable
+    let eliminatedWordsVariable = "";
     if (eliminatedWords != null) {
         for (let i = 0; i < eliminatedWords.length; i++) {
             eliminatedWordsVariable += `<a id=${eliminatedWords[i].Word} href=#>${eliminatedWords[i].Word}</a>`
@@ -518,7 +532,7 @@ function waterfalls(candidateWords, eliminatedWords) {
 
                 document.getElementById(eliminatedWords[i].Word).onclick = function () {
                     fetchData(`https://dictionaryapi.com/api/v3/references/collegiate/json/${eliminatedWords[i].Word}?key=${apiKey}`) //fetch for dictionary definition
-                        .then(data => generateDefinitionDisplay(data))
+                        .then(data => generateDefinitionDisplay(data, eliminatedWords[i].Word))
                 }
             }
             catch (err) {
