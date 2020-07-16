@@ -537,6 +537,7 @@ function waterfalls(candidateWords, eliminatedWords) {
             }
             catch (err) {
                 console.log(err.message);
+                
             }
         }
     }
