@@ -336,8 +336,9 @@ function wordLengthValidator(userInputWordLength) {
     }
     return validWordLength;
 }
-function buildGamePlayBox(userInputWordLength, theGuess) {
+
     //builds the form that user will use to input responses
+function buildGamePlayBox(userInputWordLength, theGuess) {
     var html = "";
     html += '<div class="containsLetters">'
     for (var i = 0; i < userInputWordLength; i++) {
@@ -371,7 +372,7 @@ function buildGamePlayBox(userInputWordLength, theGuess) {
     //var userInputSet = new Set();
 }
 
-
+//Click events - new game and submit letters
 document.getElementById("newGame").onclick = function () {    //sets the wordlength variable upon new game click and sets the html for gameplay
     userInputWordLength = document.getElementById("numberOfLetters").value; //gets value of user input text box
     var userInputString = "";
@@ -404,6 +405,7 @@ function fetchData(url) { // Will use this as a general fetch -ex: dictionary de
 // fetchData(`https://dictionaryapi.com/api/v3/references/collegiate/json/${word}?key=${apiKey}`) //fetch for dictionary definition
 //     .then(data => generateDefinitionDisplay(data))
 
+//prints definition from API to the page
 function generateDefinitionDisplay(data, word, wordFullyGuessed, userInputString) {  //displays the dictionary definition
     console.log(data);
     if (data[0] || data[0].shortdef[0]) {    //checks to make sure a valid definition came through and not suggestions     
@@ -432,6 +434,7 @@ function checkStatus(response) {
 
 }
 
+//This function generates stats and prints them to the page 
 function statsInfo(userInputString, candidateWords, incorrectLetters, masterIncorrectLetters) {
     masterIncorrectLetters;
     incorrectLetters;
@@ -484,7 +487,7 @@ function statsInfo(userInputString, candidateWords, incorrectLetters, masterInco
 
 
 
-
+//This function prints the candidate words and eliminated words with a link to check their definition
 function waterfalls(candidateWords, eliminatedWords) {
     let candidateWordsVariable = "";
     if (candidateWords != null) {
@@ -537,7 +540,7 @@ function waterfalls(candidateWords, eliminatedWords) {
             }
             catch (err) {
                 console.log(err.message);
-                
+
             }
         }
     }
