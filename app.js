@@ -275,7 +275,7 @@ function compileUserInput(userInputWordLength) {
     return { userInputString }
 }
 
-function determineListOfIncorrectLetters(userInputString, incorrectLetters, masterIncorrectLetters) {
+function determineListOfIncorrectLetters(userInputString, incorrectLetters, masterIncorrectLetters, lettersGuessed) {
     incorrectLetters;
     masterIncorrectLetters;
     for (i = 0; i < lettersGuessed.length; i++) {
@@ -291,12 +291,13 @@ function determineListOfIncorrectLetters(userInputString, incorrectLetters, mast
             console.log(err.message);
         }
     }
+    lettersGuessed;
     return { incorrectLetters, masterIncorrectLetters }
 }
 
 function orderOfOperations(userInputString, incorrectLetters, masterIncorrectLetters, lettersGuessed, firstRun) {
     var { userInputString } = compileUserInput(userInputWordLength, firstRun);
-    var { incorrectLetters, masterIncorrectLetters } = determineListOfIncorrectLetters(userInputString, incorrectLetters = [], masterIncorrectLetters = []);
+    var { incorrectLetters, masterIncorrectLetters,lettersGuessed } = determineListOfIncorrectLetters(userInputString, incorrectLetters = [], masterIncorrectLetters = [],lettersGuessed);
     var { candidateWords, eliminatedWords, allLettersFromValidWords, wordFullyGuessed, incorrectLetters, masterIncorrectLetters } = analyzeWords(userInputWordLength, userInputString, incorrectLetters, masterIncorrectLetters)
     chooseDefinedWord(makeAGuess(countLetters(allLettersFromValidWords), userInputString))
     messages(theGuess, userInputString, candidateWords)
@@ -352,7 +353,7 @@ function buildGamePlayBox(userInputWordLength, theGuess) {
             //     document.getElementById("b${i}").value = "j";
             //   }">${theGuess}</button>` +
 
-        '</div>'
+        // '</div>'
         
         // document.getElementById(`b${i}`).onclick = function () {
         //     console.log("it works") 
@@ -366,10 +367,14 @@ function buildGamePlayBox(userInputWordLength, theGuess) {
     // for (var i = 0; i < userInputWordLength; i++) {
     //     document.getElementById(`${i}`).value = "j";
     // }
-    lettersGuessed = []
+    //lettersGuessed = []
     var masterIncorrectLetters = []
     incorrectLetters = []
     //var userInputSet = new Set();
+    var userInputString = "";
+    return userInputString
+
+
 }
 
 //Click events - new game and submit letters
@@ -378,6 +383,8 @@ document.getElementById("newGame").onclick = function () {    //sets the wordlen
     var userInputString = "";
     incorrectLetters = []
     masterIncorrectLetters=[]
+    lettersGuessed=[]
+    console.log("New Game was clicked")
 
     if (wordLengthValidator(userInputWordLength) == false) {
         messages("invalidWordLength", userInputString = 0, candidateWords = 0)
@@ -389,7 +396,7 @@ document.getElementById("newGame").onclick = function () {    //sets the wordlen
     document.getElementById("submitLettersButton").onclick = function () {
         console.log("Submit was clicked")
         incorrectLetters = []
-        masterIncorrectLetters
+        masterIncorrectLetters;
         orderOfOperations(userInputString, incorrectLetters, masterIncorrectLetters, lettersGuessed, firstRun = false)
     }
 }
