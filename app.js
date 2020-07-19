@@ -47,9 +47,9 @@ function countLetters(string) {
     //creates a map with Frequency:Letter
     for (let char of string) {
         if (letterMap.hasOwnProperty(char)) {
-            letterMap[char]++
+            letterMap[char]++;
         } else {
-            letterMap[char] = 1
+            letterMap[char] = 1;
         }
     }
 
@@ -155,7 +155,7 @@ function analyzeWords(userWordLength, userInputString, incorrectLetters, masterI
                 eliminatedWords;
             }
 
-            //If the word is a candidate, add it to the candidate list and add the set of letters to the letter list
+            //If the word is a candidate, add it to the candidate list and add the SET of letters to the letter list
             if (isCandidateWord === true) {
                 candidateWords.push(hfWords[i])
                 // allLettersFromValidWords =[...hfWords[i].Set]
@@ -186,38 +186,18 @@ function analyzeWords(userWordLength, userInputString, incorrectLetters, masterI
     return { candidateWords, eliminatedWords, allLettersFromValidWords, wordFullyGuessed, incorrectLetters, masterIncorrectLetters }
 }
 
-//Controls the message in the message box, let vs var  messageToUser will reduce repetition
+//Controls the message in the message box,
 function messages(info, userInputString, candidateWords) {
     console.log("The messages function ran", info, userInputString, candidateWords)
     if (info == true) {
-        let messageToUser =
-            '<div >' +
-            `<h1><p> I have guessed your word. It is ${userInputString}</p></h1>` +
-            '</div>'
-        message.innerHTML = messageToUser;
+        message.innerHTML = `<div ><h1><p> I have guessed your word. It is "${userInputString}".</p></h1></div>`
     } else if (candidateWords.length == 0) {
-        console.log("The info was undefined", info)
-        let messageToUser =
-            '<div >' +
-            `<h1><p> Something went Wrong!! Are you sure you told me the correct letters. Look over the letters I've already guessed to make sure. Are you having me guess a real word?</p></h1>` +
-            '</div>'
-        message.innerHTML = messageToUser;
+        message.innerHTML = `<div ><h1><p> Something went Wrong!! Are you sure you told me the correct letters. Look over the letters I've already guessed to make sure. Are you having me guess a real word?</p></h1></div>`
     }
     else if (info == false) {
-        console.log("The messages function ran down here", info, userInputString, candidateWords)
-        let messageToUser =
-            '<div >' +
-            `<h1><p> Please only give me lower case letters</p></h1>` +
-            '</div>'
-        message.innerHTML = messageToUser;
+        message.innerHTML = '<div ><h1><p> Please only give me lower case letters</p></h1></div>'
     } else if (info == "invalidWordLength") {
-        console.log("The messages function ran down here", info, userInputString, candidateWords)
-
-        let messageToUser =
-            '<div >' +
-            `<h1><p> It doesn't look like you have a real word in mind. Please give me a number above 0 and one that corresponds to the length of a real word</p></h1>` +
-            '</div>'
-        message.innerHTML = messageToUser;
+        message.innerHTML = `<div ><h1><p> It doesn't look like you have a real word in mind. Please give me a number above 0 and one that corresponds to the length of a real word</p></h1></div>`
     }
 
     else {
@@ -230,7 +210,7 @@ function messages(info, userInputString, candidateWords) {
 
         if (candidateWords != null && candidateWords.length == 1) {
             messageToUser += `<h1>Because I'm thinking your word is ... ${candidateWords[0].Word}.</h1>`
-            console.log("this is what I'm trying to pring", candidateWords[0])
+            console.log("this is what I'm trying to print", candidateWords[0])
         }
         messageToUser += '</p></div>'
         message.innerHTML = messageToUser;
@@ -238,15 +218,13 @@ function messages(info, userInputString, candidateWords) {
 }
 
 //Takes multiple user inputs, checks for valid inputs, and generates the userInputString
-function compileUserInput(userInputWordLength) {
+function compileUserInput(userInputWordLength, firstRun) {
     var userInputString = "";
     if (firstRun == true) {
-        console.log("The firstRun is true - first run for start of game")
         for (i = 0; i < userInputWordLength; i++) {
             userInputString += " ";
             //userInputSet.add(userInputString[i]);
         }
-        firstRun = false;
         console.log("1userINputstring is now:", userInputString, userInputString.length)
     } else {
         for (i = 0; i < userInputWordLength; i++) {
@@ -297,7 +275,7 @@ function determineListOfIncorrectLetters(userInputString, incorrectLetters, mast
 
 function orderOfOperations(userInputString, incorrectLetters, masterIncorrectLetters, lettersGuessed, firstRun) {
     var { userInputString } = compileUserInput(userInputWordLength, firstRun);
-    var { incorrectLetters, masterIncorrectLetters,lettersGuessed } = determineListOfIncorrectLetters(userInputString, incorrectLetters = [], masterIncorrectLetters = [],lettersGuessed);
+    var { incorrectLetters, masterIncorrectLetters, lettersGuessed } = determineListOfIncorrectLetters(userInputString, incorrectLetters = [], masterIncorrectLetters = [], lettersGuessed);
     var { candidateWords, eliminatedWords, allLettersFromValidWords, wordFullyGuessed, incorrectLetters, masterIncorrectLetters } = analyzeWords(userInputWordLength, userInputString, incorrectLetters, masterIncorrectLetters)
     chooseDefinedWord(makeAGuess(countLetters(allLettersFromValidWords), userInputString))
     messages(theGuess, userInputString, candidateWords)
@@ -338,7 +316,7 @@ function wordLengthValidator(userInputWordLength) {
     return validWordLength;
 }
 
-    //builds the form that user will use to input responses
+//builds the form that user will use to input responses
 function buildGamePlayBox(userInputWordLength, theGuess) {
     var html = "";
     html += '<div class="containsLetters">'
@@ -347,14 +325,14 @@ function buildGamePlayBox(userInputWordLength, theGuess) {
             '<div class="letterBox" >' +
             `<form >` +
             `<input type="text" id="${i}"  maxlength="1">` +
-            '</div>' 
-            // '<div class="buttonAddLetter">' +
-            // `<button type="button" id="b${i}" onclick= "() { function
-            //     document.getElementById("b${i}").value = "j";
-            //   }">${theGuess}</button>` +
+            '</div>'
+        // '<div class="buttonAddLetter">' +
+        // `<button type="button" id="b${i}" onclick= "() { function
+        //     document.getElementById("b${i}").value = "j";
+        //   }">${theGuess}</button>` +
 
         // '</div>'
-        
+
         // document.getElementById(`b${i}`).onclick = function () {
         //     console.log("it works") 
         //     fetchData(`https://dictionaryapi.com/api/v3/references/collegiate/json/race?key=${apiKey}`) //fetch for dictionary definition
@@ -382,8 +360,8 @@ document.getElementById("newGame").onclick = function () {    //sets the wordlen
     userInputWordLength = document.getElementById("numberOfLetters").value; //gets value of user input text box
     var userInputString = "";
     incorrectLetters = []
-    masterIncorrectLetters=[]
-    lettersGuessed=[]
+    masterIncorrectLetters = []
+    lettersGuessed = []
     console.log("New Game was clicked")
 
     if (wordLengthValidator(userInputWordLength) == false) {
@@ -393,6 +371,47 @@ document.getElementById("newGame").onclick = function () {    //sets the wordlen
         userInputString = buildGamePlayBox(userInputWordLength, theGuess)
 
     }
+
+    // var request = new XMLHttpRequest();
+    // request.open("GET", "hfWords.json", false);
+    // request.send(null)
+    // var my_JSON_object = JSON.parse(request.responseText);
+    // alert (my_JSON_object.result[0]);
+
+
+    // var xhttp = new XMLHttpRequest();
+    // xhttp.onreadystatechange = function() {
+    //     if(xhttp.readyState ==4 && xhttp.status == 200){
+    //         var javaobj = JSON.parse(xhttp.response);
+    //         console.log("java object:",javaobj.Word)
+
+    //     }
+
+    // }
+    // xhttp.open("GET","hfWords.json",true);
+    // xhttp.send();
+
+
+    // var request = new XMLHttpRequest();
+    // request.open('GET', 'hfWords.json', true);
+    // request.onload = function () {
+    //     if (request.status >= 200 && request.status < 400) {
+    //         // Success!
+    //         var data = JSON.parse(request.responseText);
+    //         console.log('data', data);
+    //     } else {
+    //         // We reached our target server, but it returned an error
+
+    //     }
+    // };
+    // request.onerror = function () {
+    //     // There was a connection error of some sort
+    // };
+    // request.send();
+
+
+
+
     document.getElementById("submitLettersButton").onclick = function () {
         console.log("Submit was clicked")
         incorrectLetters = []
