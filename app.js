@@ -94,7 +94,7 @@ function chooseDefinedWord(theGuess) {
         randomNumber = Math.floor(Math.random() * focusCandidateWords.length);
         word = focusCandidateWords[randomNumber].Word;
         fetchData(`https://dictionaryapi.com/api/v3/references/collegiate/json/${word}?key=${apiKey}`) //fetch for dictionary definition
-            .then(data => generateDefinitionDisplay(data, word))
+            .then(data => generateDefinitionDisplay(data, word, wordFullyGuessed=false,requestFromWhere="notUserInitiated"))
     }
     catch (err) {
         console.log(err.message);
@@ -285,7 +285,7 @@ function orderOfOperations(userInputString, incorrectLetters, masterIncorrectLet
         try {
 
             fetchData(`https://dictionaryapi.com/api/v3/references/collegiate/json/${userInputString}?key=${apiKey}`) //fetch for dictionary definition
-                .then(data => generateDefinitionDisplay(data, userInputString, wordFullyGuessed, userInputString))
+                .then(data => generateDefinitionDisplay(data, userInputString, wordFullyGuessed=true, requestFromWhere="wordFullyGuessed"))
         }
         catch (err) {
             console.log(err.message);
@@ -340,7 +340,7 @@ function buildGamePlayBox(userInputWordLength, theGuess) {
         // }
     }
     html += '</div>'
-    html += '<button type="button" id="submitLettersButton">Add letters if appropriate and then submit</button>' + '</form>';
+    html += '<button type="button" id="submitLettersButton">Add letters if appropriate and then click to submit</button>' + '</form>';
     gamePlay.innerHTML = html;  //injects the html into the gameplay section
     // for (var i = 0; i < userInputWordLength; i++) {
     //     document.getElementById(`${i}`).value = "j";
@@ -432,14 +432,15 @@ function fetchData(url) { // Will use this as a general fetch -ex: dictionary de
 //     .then(data => generateDefinitionDisplay(data))
 
 //prints definition from API to the page
-function generateDefinitionDisplay(data, word, wordFullyGuessed, userInputString) {  //displays the dictionary definition
+function generateDefinitionDisplay(data, word, wordFullyGuessed, requestFromWhere) {  //displays the dictionary definition
     console.log(data);
     if (data[0] || data[0].shortdef[0]) {    //checks to make sure a valid definition came through and not suggestions     
         if (wordFullyGuessed == true) {
             definitionApiWord.innerHTML = `Your word is ${word}:`
-        } else {
+        } else if (requestFromWhere==="userInitiated"){
+            definitionApiWord.innerHTML = `You wish to know the the definition of the word ${word}:`
+        } else{
             definitionApiWord.innerHTML = "I'm not saying this is your word, but it could be: " + word; //data[0].hwi.hw;  // + " " + data[0].shortdef[0]; //word
-
         }
         let listOfDefinitions = "";
         for (let i = 0; i < data[0].shortdef.length; i++) { listOfDefinitions += i + 1 + ".) " + data[0].shortdef[i] + " " }
@@ -535,7 +536,7 @@ function waterfalls(candidateWords, eliminatedWords) {
 
                 document.getElementById(candidateWords[i].Word).onclick = function () {
                     fetchData(`https://dictionaryapi.com/api/v3/references/collegiate/json/${candidateWords[i].Word}?key=${apiKey}`) //fetch for dictionary definition
-                        .then(data => generateDefinitionDisplay(data, candidateWords[i].Word))
+                        .then(data => generateDefinitionDisplay(data, candidateWords[i].Word,wordFullyGuessed = false,requestFromWhere="userInitiated"))
                 }
             }
             catch (err) {
@@ -561,7 +562,7 @@ function waterfalls(candidateWords, eliminatedWords) {
 
                 document.getElementById(eliminatedWords[i].Word).onclick = function () {
                     fetchData(`https://dictionaryapi.com/api/v3/references/collegiate/json/${eliminatedWords[i].Word}?key=${apiKey}`) //fetch for dictionary definition
-                        .then(data => generateDefinitionDisplay(data, eliminatedWords[i].Word))
+                        .then(data => generateDefinitionDisplay(data, eliminatedWords[i].Word,wordFullyGuessed=false,requestFromWhere="userInitiated"))
                 }
             }
             catch (err) {
