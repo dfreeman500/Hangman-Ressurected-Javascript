@@ -23,6 +23,16 @@ var letterFrequency = []
 var userInputWordLength;
 let listOfWords = []
 
+function getJsonFile(fileName){
+    var request = new XMLHttpRequest();
+    request.open("GET", "bigWords.json", false);
+    request.send(null)
+    return jsonObject = JSON.parse(request.responseText);
+}
+
+var jsonObject = getJsonFile("bigWords.json")
+console.log(jsonObject)
+
 // function hangmanStartup(){
 //     let alphabet = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
 // var html = "this is it";
@@ -67,7 +77,7 @@ function countLetters(string) {
     for (let item of newSortedLettersFromSet) {
         //iterate through array of letters by index
         for (let i = 0; i < valuesArray.length; i++) {
-            //if letters w/ index[i] equals the value of the frequcy number and it's not already in the newSortedLetters array, add it
+            //if letters w/ index[i] equals the value of the frequency number and it's not already in the newSortedLetters array, add it
             if (valuesArray[i] === item && newSortedLetters.includes(letterArray[i]) == false) {
                 newSortedLetters.push(letterArray[i])
             }
@@ -154,18 +164,24 @@ function analyzeWords(userWordLength, userInputString, incorrectLetters, masterI
                 candidateWords;
                 eliminatedWords;
             }
-
             //If the word is a candidate, add it to the candidate list and add the SET of letters to the letter list
             if (isCandidateWord === true) {
                 candidateWords.push(hfWords[i])
                 // allLettersFromValidWords =[...hfWords[i].Set]
-                for (j = 0; j < hfWords[i].Set.length; j++) {
+                //console.log(new Set(hfWords[i].Word).split())
+                //candidateWordSet += 
+                var candidateWordSet=Array.from(new Set(hfWords[i].Word));
+
+                for (j = 0; j < candidateWordSet.length; j++) {
                     var letterCheck = /^[a-zA-Z]+$/; //only alpha
-                    if (letterCheck.test(hfWords[i].Set[j])) {  //Returns a Boolean value that indicates whether or not a pattern exists in a searched string.
-                        allLettersFromValidWords += hfWords[i].Set[j]
+                    if (letterCheck.test(candidateWordSet[j])) {  //Returns a Boolean value that indicates whether or not a pattern exists in a searched string.
+                        allLettersFromValidWords += candidateWordSet[j]
                     }
-                    //console.log(hfWords[i].Set)
                 }
+
+
+                //     //console.log(hfWords[i].Set)
+                // }
             } else {
                 eliminatedWords.push(hfWords[i])
             }
@@ -364,6 +380,16 @@ document.getElementById("newGame").onclick = function () {    //sets the wordlen
     lettersGuessed = []
     console.log("New Game was clicked")
 
+    console.log("JSON STUFF IS HERE - START")
+    var request = new XMLHttpRequest();
+    request.open("GET", "hfWords.json", false);
+    request.send(null)
+    var my_JSON_object = JSON.parse(request.responseText);
+    console.log(my_JSON_object.markers);
+    console.log("JSON STUFF IS HERE - END")
+
+
+
     if (wordLengthValidator(userInputWordLength) == false) {
         messages("invalidWordLength", userInputString = 0, candidateWords = 0)
     } else {
@@ -372,11 +398,14 @@ document.getElementById("newGame").onclick = function () {    //sets the wordlen
 
     }
 
+    // console.log("JSON STUFF IS HERE - START")
     // var request = new XMLHttpRequest();
     // request.open("GET", "hfWords.json", false);
     // request.send(null)
     // var my_JSON_object = JSON.parse(request.responseText);
     // alert (my_JSON_object.result[0]);
+    // console.log("JSON STUFF IS HERE - END")
+
 
 
     // var xhttp = new XMLHttpRequest();
@@ -516,7 +545,7 @@ function statsInfo(userInputString, candidateWords, incorrectLetters, masterInco
 
 //This function prints the candidate words and eliminated words with a link to check their definition
 function waterfalls(candidateWords, eliminatedWords) {
-    let candidateWordsVariable = "";
+    let candidateWordsVariable = "Candidate Words: ";
     if (candidateWords != null) {
         for (let i = 0; i < candidateWords.length; i++) {
 
@@ -549,7 +578,7 @@ function waterfalls(candidateWords, eliminatedWords) {
 
     }
 
-    let eliminatedWordsVariable = "";
+    let eliminatedWordsVariable = "Eliminated Words: ";
     if (eliminatedWords != null) {
         for (let i = 0; i < eliminatedWords.length; i++) {
             eliminatedWordsVariable += `<a id=${eliminatedWords[i].Word} href=#>${eliminatedWords[i].Word}</a>`
