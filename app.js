@@ -1,4 +1,4 @@
-let gamePlay = document.querySelector('.gamePlay');
+var gamePlay = document.querySelector('.gamePlay');
 const definitionApiIntro = document.querySelector('.definitionApiIntro');
 const definitionApiWord = document.querySelector('.definitionApiWord');
 const definitionApiDefinitions = document.querySelector('.definitionApiDefinitions');
@@ -8,7 +8,7 @@ const UpperWaterfall = document.querySelector('.UpperWaterfall');
 const LowerWaterfall = document.querySelector('.LowerWaterfall');
 
 
-let wordLists = [hfWords, bigWords]; //List of variable pointing to the different word lists
+// let wordLists = [hfWords, bigWords]; //List of variable pointing to the different word lists
 var candidateWords = []
 let eliminatedWords = []
 
@@ -19,19 +19,23 @@ var masterIncorrectLetters = []
 var letterFrequency = []
 
 
-
 var userInputWordLength;
 let listOfWords = []
 
-function getJsonFile(fileName){
-    var request = new XMLHttpRequest();
-    request.open("GET", "bigWords.json", false);
-    request.send(null)
-    return jsonObject = JSON.parse(request.responseText);
-}
 
-var jsonObject = getJsonFile("bigWords.json")
-console.log(jsonObject)
+
+
+let bigWordsRequest = new XMLHttpRequest();
+bigWordsRequest.open("GET", "bigWords.json", false);
+bigWordsRequest.send(null)
+var bigWords = JSON.parse(bigWordsRequest.responseText)
+console.log(bigWords);
+
+let hfWordsRequest = new XMLHttpRequest();
+hfWordsRequest.open("GET", "hfWords.json", false);
+hfWordsRequest.send(null)
+var hfWords = JSON.parse(hfWordsRequest.responseText)
+console.log(hfWords)
 
 // function hangmanStartup(){
 //     let alphabet = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
@@ -69,7 +73,6 @@ function countLetters(string) {
     var valueSet = new Set(valuesArray)
     var newSortedLettersFromSet = [...valueSet]
     newSortedLettersFromSet.sort(function (a, b) { return b - a }); //Sorts the set from largest to smallest
-    //console.log("this is new sorted letters from set", newSortedLettersFromSet)
 
     let newSortedLetters = []
 
@@ -104,7 +107,7 @@ function chooseDefinedWord(theGuess) {
         randomNumber = Math.floor(Math.random() * focusCandidateWords.length);
         word = focusCandidateWords[randomNumber].Word;
         fetchData(`https://dictionaryapi.com/api/v3/references/collegiate/json/${word}?key=${apiKey}`) //fetch for dictionary definition
-            .then(data => generateDefinitionDisplay(data, word, wordFullyGuessed=false,requestFromWhere="notUserInitiated"))
+            .then(data => generateDefinitionDisplay(data, word, wordFullyGuessed = false, requestFromWhere = "notUserInitiated"))
     }
     catch (err) {
         console.log(err.message);
@@ -126,18 +129,19 @@ function makeAGuess(arrayOfLettersByFrequency, userInputString) {
 }
 
 //Determines which word is a candidate and which can be ruled out
-function analyzeWords(userWordLength, userInputString, incorrectLetters, masterIncorrectLetters) {
-    //console.log("inside analyze words function: userWordLength:", userWordLength, "userInputString", userInputString, "userInputLetterArray", userInputIndexed, "userInputSet", userInputSet)
+function analyzeWords(userWordLength, userInputString, incorrectLetters, masterIncorrectLetters, wordList) {
     allLettersFromValidWords = []
     letterFrequency = []
     var wordFullyGuessed = false;
-    //userInputString = "phone";
+    candidateWords = []
+    eliminatedWords = []
     //Consider using filter method here????
-    for (i = 0; i < hfWords.length; i++) {
+    for (i = 0; i < wordList.length; i++) {
         var isCandidateWord = true;
-        if (hfWords[i].WordLength == userWordLength) {
+        if (wordList[i].Word.length == userWordLength) {
+            //var a = wordList[i].Word
             for (let j = 0; j < userWordLength; j++) { //iterates through each possible word to find candidate
-                if (userInputString[j] === " " || userInputString[j] == hfWords[i].Word[j]) {
+                if (userInputString[j] === " " || userInputString[j] == wordList[i].Word[j]) {
                     //console.log(isCandidateWord)
                 } else {
                     isCandidateWord = false;
@@ -145,32 +149,32 @@ function analyzeWords(userWordLength, userInputString, incorrectLetters, masterI
                 }
 
                 //Elminates words that have letter within the userInputString but in the wrong location || "b","u","l"," "  should eliminate "b","u","l","l"
-                if (userInputString[j] === " " && userInputString.includes(hfWords[i].Word[j])) {
+                if (userInputString[j] === " " && userInputString.includes(wordList[i].Word[j])) {
                     isCandidateWord = false;
                     break;
                 }
 
                 // if the possible candidate has letters in the incorrectLetters then isCandidateWord= false
                 for (k = 0; k < incorrectLetters.length; k++) {
-                    if (!hfWords[i].Word.includes(incorrectLetters[k])) {
+                    if (!wordList[i].Word.includes(incorrectLetters[k])) {
                         // console.log(!lettersGuessed.includes(userInputSet[i]))
                     } else {
                         isCandidateWord = false;
                         break;
                     }
                 }
-                incorrectLetters;
-                masterIncorrectLetters;
-                candidateWords;
-                eliminatedWords;
+                // incorrectLetters;
+                // masterIncorrectLetters;
+                // candidateWords;
+                // eliminatedWords;
             }
             //If the word is a candidate, add it to the candidate list and add the SET of letters to the letter list
             if (isCandidateWord === true) {
-                candidateWords.push(hfWords[i])
+                candidateWords.push(wordList[i])
                 // allLettersFromValidWords =[...hfWords[i].Set]
                 //console.log(new Set(hfWords[i].Word).split())
                 //candidateWordSet += 
-                var candidateWordSet=Array.from(new Set(hfWords[i].Word));
+                var candidateWordSet = Array.from(new Set(wordList[i].Word));
 
                 for (j = 0; j < candidateWordSet.length; j++) {
                     var letterCheck = /^[a-zA-Z]+$/; //only alpha
@@ -183,22 +187,20 @@ function analyzeWords(userWordLength, userInputString, incorrectLetters, masterI
                 //     //console.log(hfWords[i].Set)
                 // }
             } else {
-                eliminatedWords.push(hfWords[i])
+                eliminatedWords.push(wordList[i])
             }
 
-            if (hfWords[i].Word === userInputString) {
-                console.log("The candidate word:", hfWords[i].Word, "matches the userString", userInputString);
+            if (wordList[i].Word === userInputString) {
+                console.log("The candidate word:", wordList[i].Word, "matches the userString", userInputString);
                 wordFullyGuessed = true;
             }
         }
     }
-    console.log("this is candidate words: ", candidateWords);
-    console.log("this is eliminated words: ", eliminatedWords);
-    //console.log("this is a candidate word:", candidateWords[0].Word)
-    console.log("this is alllettersfromvalidwords", allLettersFromValidWords)
-    //console.log(countLetters(allLettersFromValidWords))
-    incorrectLetters;
-    masterIncorrectLetters;
+
+
+    //console.log("this is candidate words: ", candidateWords, "this is eliminated words: ", eliminatedWords,"this is alllettersfromvalidwords", allLettersFromValidWords, "The wordlist is: ", wordList);
+    // incorrectLetters;
+    // masterIncorrectLetters;
     return { candidateWords, eliminatedWords, allLettersFromValidWords, wordFullyGuessed, incorrectLetters, masterIncorrectLetters }
 }
 
@@ -257,7 +259,7 @@ function compileUserInput(userInputWordLength, firstRun) {
             } else {
                 userInputString += " "
             }
-            console.log("2 - userINputstring is now:", userInputString)
+            //console.log("2 - userINputstring is now:", userInputString)
         }
     }
     console.log("user input in various forms", i, "userInputString:", userInputString, "userINputString length:", userInputString.length)
@@ -289,10 +291,15 @@ function determineListOfIncorrectLetters(userInputString, incorrectLetters, mast
     return { incorrectLetters, masterIncorrectLetters }
 }
 
-function orderOfOperations(userInputString, incorrectLetters, masterIncorrectLetters, lettersGuessed, firstRun) {
+function orderOfOperations(userInputString, incorrectLetters, masterIncorrectLetters, lettersGuessed, firstRun, wordList) {
     var { userInputString } = compileUserInput(userInputWordLength, firstRun);
     var { incorrectLetters, masterIncorrectLetters, lettersGuessed } = determineListOfIncorrectLetters(userInputString, incorrectLetters = [], masterIncorrectLetters = [], lettersGuessed);
-    var { candidateWords, eliminatedWords, allLettersFromValidWords, wordFullyGuessed, incorrectLetters, masterIncorrectLetters } = analyzeWords(userInputWordLength, userInputString, incorrectLetters, masterIncorrectLetters)
+    var { candidateWords, eliminatedWords, allLettersFromValidWords, wordFullyGuessed, incorrectLetters, masterIncorrectLetters } = analyzeWords(Number(userInputWordLength), userInputString, incorrectLetters, masterIncorrectLetters,wordList)
+    if (candidateWords.length==0 && wordList==hfWords){
+        //console.log("The canddiateWords length is:", candidateWords.length, "the word list is", wordList)
+        var { candidateWords, eliminatedWords, allLettersFromValidWords, wordFullyGuessed, incorrectLetters, masterIncorrectLetters } = analyzeWords(Number(userInputWordLength), userInputString, incorrectLetters, masterIncorrectLetters, wordList=bigWords)
+        wordList=bigWords;
+    }
     chooseDefinedWord(makeAGuess(countLetters(allLettersFromValidWords), userInputString))
     messages(theGuess, userInputString, candidateWords)
 
@@ -301,7 +308,7 @@ function orderOfOperations(userInputString, incorrectLetters, masterIncorrectLet
         try {
 
             fetchData(`https://dictionaryapi.com/api/v3/references/collegiate/json/${userInputString}?key=${apiKey}`) //fetch for dictionary definition
-                .then(data => generateDefinitionDisplay(data, userInputString, wordFullyGuessed=true, requestFromWhere="wordFullyGuessed"))
+                .then(data => generateDefinitionDisplay(data, userInputString, wordFullyGuessed = true, requestFromWhere = "wordFullyGuessed"))
         }
         catch (err) {
             console.log(err.message);
@@ -321,14 +328,9 @@ function wordLengthValidator(userInputWordLength) {
     if (!testCondition.test(userInputWordLength)) {  //Returns a Boolean value that indicates whether or not a pattern exists in a searched string.
         return validWordLength
     }
-    for (let i = 0; i < hfWords.length; i++) {
-        //console.log(hfWords[i].WordLength)
-        if (userInputWordLength == hfWords[i].WordLength) {
-            validWordLength = true;
-            //console.log("break now")
-            return validWordLength;
-        }
-    }
+    let lengthVerification = ['1', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '2', '20', '21', '22', '23', '24', '25', '27', '28', '29', '3', '31', '4', '45', '5', '6', '7', '8', '9']
+    lengthVerification.includes(userInputWordLength) ? validWordLength = true : validWordLength = false;
+    let a = lengthVerification.includes(userInputWordLength)
     return validWordLength;
 }
 
@@ -379,73 +381,22 @@ document.getElementById("newGame").onclick = function () {    //sets the wordlen
     masterIncorrectLetters = []
     lettersGuessed = []
     console.log("New Game was clicked")
-
-    console.log("JSON STUFF IS HERE - START")
-    var request = new XMLHttpRequest();
-    request.open("GET", "hfWords.json", false);
-    request.send(null)
-    var my_JSON_object = JSON.parse(request.responseText);
-    console.log(my_JSON_object.markers);
-    console.log("JSON STUFF IS HERE - END")
-
+    var wordList = hfWords;
 
 
     if (wordLengthValidator(userInputWordLength) == false) {
         messages("invalidWordLength", userInputString = 0, candidateWords = 0)
     } else {
-        orderOfOperations(userInputString, incorrectLetters, masterIncorrectLetters, lettersGuessed, firstRun = true)
+        orderOfOperations(userInputString, incorrectLetters, masterIncorrectLetters, lettersGuessed, firstRun = true,wordList)
         userInputString = buildGamePlayBox(userInputWordLength, theGuess)
 
     }
-
-    // console.log("JSON STUFF IS HERE - START")
-    // var request = new XMLHttpRequest();
-    // request.open("GET", "hfWords.json", false);
-    // request.send(null)
-    // var my_JSON_object = JSON.parse(request.responseText);
-    // alert (my_JSON_object.result[0]);
-    // console.log("JSON STUFF IS HERE - END")
-
-
-
-    // var xhttp = new XMLHttpRequest();
-    // xhttp.onreadystatechange = function() {
-    //     if(xhttp.readyState ==4 && xhttp.status == 200){
-    //         var javaobj = JSON.parse(xhttp.response);
-    //         console.log("java object:",javaobj.Word)
-
-    //     }
-
-    // }
-    // xhttp.open("GET","hfWords.json",true);
-    // xhttp.send();
-
-
-    // var request = new XMLHttpRequest();
-    // request.open('GET', 'hfWords.json', true);
-    // request.onload = function () {
-    //     if (request.status >= 200 && request.status < 400) {
-    //         // Success!
-    //         var data = JSON.parse(request.responseText);
-    //         console.log('data', data);
-    //     } else {
-    //         // We reached our target server, but it returned an error
-
-    //     }
-    // };
-    // request.onerror = function () {
-    //     // There was a connection error of some sort
-    // };
-    // request.send();
-
-
-
 
     document.getElementById("submitLettersButton").onclick = function () {
         console.log("Submit was clicked")
         incorrectLetters = []
         masterIncorrectLetters;
-        orderOfOperations(userInputString, incorrectLetters, masterIncorrectLetters, lettersGuessed, firstRun = false)
+        orderOfOperations(userInputString, incorrectLetters, masterIncorrectLetters, lettersGuessed, firstRun = false, wordList)
     }
 }
 
@@ -457,8 +408,7 @@ function fetchData(url) { // Will use this as a general fetch -ex: dictionary de
         .catch(error => console.log('There was a problem attempting to retrieve this information:', error))
 }
 
-// fetchData(`https://dictionaryapi.com/api/v3/references/collegiate/json/${word}?key=${apiKey}`) //fetch for dictionary definition
-//     .then(data => generateDefinitionDisplay(data))
+
 
 //prints definition from API to the page
 function generateDefinitionDisplay(data, word, wordFullyGuessed, requestFromWhere) {  //displays the dictionary definition
@@ -466,9 +416,9 @@ function generateDefinitionDisplay(data, word, wordFullyGuessed, requestFromWher
     if (data[0] || data[0].shortdef[0]) {    //checks to make sure a valid definition came through and not suggestions     
         if (wordFullyGuessed == true) {
             definitionApiWord.innerHTML = `Your word is ${word}:`
-        } else if (requestFromWhere==="userInitiated"){
+        } else if (requestFromWhere === "userInitiated") {
             definitionApiWord.innerHTML = `You wish to know the the definition of the word ${word}:`
-        } else{
+        } else {
             definitionApiWord.innerHTML = "I'm not saying this is your word, but it could be: " + word; //data[0].hwi.hw;  // + " " + data[0].shortdef[0]; //word
         }
         let listOfDefinitions = "";
@@ -565,7 +515,7 @@ function waterfalls(candidateWords, eliminatedWords) {
 
                 document.getElementById(candidateWords[i].Word).onclick = function () {
                     fetchData(`https://dictionaryapi.com/api/v3/references/collegiate/json/${candidateWords[i].Word}?key=${apiKey}`) //fetch for dictionary definition
-                        .then(data => generateDefinitionDisplay(data, candidateWords[i].Word,wordFullyGuessed = false,requestFromWhere="userInitiated"))
+                        .then(data => generateDefinitionDisplay(data, candidateWords[i].Word, wordFullyGuessed = false, requestFromWhere = "userInitiated"))
                 }
             }
             catch (err) {
@@ -591,7 +541,7 @@ function waterfalls(candidateWords, eliminatedWords) {
 
                 document.getElementById(eliminatedWords[i].Word).onclick = function () {
                     fetchData(`https://dictionaryapi.com/api/v3/references/collegiate/json/${eliminatedWords[i].Word}?key=${apiKey}`) //fetch for dictionary definition
-                        .then(data => generateDefinitionDisplay(data, eliminatedWords[i].Word,wordFullyGuessed=false,requestFromWhere="userInitiated"))
+                        .then(data => generateDefinitionDisplay(data, eliminatedWords[i].Word, wordFullyGuessed = false, requestFromWhere = "userInitiated"))
                 }
             }
             catch (err) {

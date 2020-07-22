@@ -11,4 +11,10 @@ Dependencies/Instructions:
     * Once installed, type: http-server [directory], ex: http-server "C:\HangmanGame"
     * Once the server is started it will state the address: ex: http://127.0.0.1:8080
     * Copy the address into the address bar in your browser
+* Create a "api.js" in the same directory as index.html and paste given API key into this file
 * Enjoy the hangman game
+
+
+Notes on JSON files:
+    I believe the list of words in hfWords.json originally was from a 5000 most frequently used word list. It may have been this website (https://www.wordfrequency.info/), but I cannot find the link to download again. In any case I removed about 700 words from the list. The words in bigWords.json were originally from https://github.com/dwyl/english-words, however I at some point merged this list with another and have also removed words that clearly weren't English as this larger list has several errors especially in the smaller words.
+
