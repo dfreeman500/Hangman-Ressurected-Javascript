@@ -21,7 +21,7 @@ var letterFrequency = []
 
 var userInputWordLength;
 let listOfWords = []
-var bigWordsSubset=[]
+var bigWordsSubset = []
 
 
 
@@ -38,17 +38,17 @@ hfWordsRequest.send(null)
 var hfWords = JSON.parse(hfWordsRequest.responseText)
 console.log(hfWords)
 
-function hangmanStartup(){
-    let alphabet = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
-var html = "this is it";
-gamePlay.innerHTML = html;  //injects the html into the gameplay section
+function hangmanStartup() {
+    let alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+    var html = "this is it";
+    gamePlay.innerHTML = html;  //injects the html into the gameplay section
 
-// while(html != "h"){
+    // while(html != "h"){
 
-//     setTimeout(() => {  html = alphabet[Math.floor(Math.random() * alphabet.length)]}, 250);
-//     gamePlay.innerHTML = html;  //injects the html into the gameplay section
+    //     setTimeout(() => {  html = alphabet[Math.floor(Math.random() * alphabet.length)]}, 250);
+    //     gamePlay.innerHTML = html;  //injects the html into the gameplay section
 
-// }
+    // }
 }
 hangmanStartup()
 
@@ -134,8 +134,8 @@ function analyzeWords(userWordLength, userInputString, incorrectLetters, masterI
     allLettersFromValidWords = []
     letterFrequency = []
     var wordFullyGuessed = false;
-    candidateWords = []
-    eliminatedWords = []
+    //candidateWords = []
+    //eliminatedWords = []
     //Consider using filter method here????
     for (i = 0; i < wordList.length; i++) {
         var isCandidateWord = true;
@@ -145,42 +145,30 @@ function analyzeWords(userWordLength, userInputString, incorrectLetters, masterI
                 if (userInputString[j] != " " && userInputString[j] != wordList[i].Word[j]) {
                     isCandidateWord = false;
                     break;
-                } 
-//Elminates words that have letter within the userInputString but in the wrong location --> "b","u","l"," "  should eliminate "b","u","l","l" and "b","u","l","b"
+                }
+                //Elminates words that have letter within the userInputString but in the wrong location --> "b","u","l"," "  should eliminate "bull" and "bulb" but not "bulk"
                 if (userInputString[j] === " " && userInputString.includes(wordList[i].Word[j])) {
                     isCandidateWord = false;
                     break;
                 }
-
                 // if the possible candidate has letters in the incorrectLetters then isCandidateWord= false
                 for (k = 0; k < incorrectLetters.length; k++) {
                     if (wordList[i].Word.includes(incorrectLetters[k])) {
                         isCandidateWord = false;
-                    } 
+                    }
                 }
-                // incorrectLetters;
-                // masterIncorrectLetters;
-                // candidateWords;
-                // eliminatedWords;
             }
             //If the word is a candidate, add it to the candidate list and add the SET of letters to the letter list
             if (isCandidateWord === true) {
                 candidateWords.push(wordList[i])
-                // allLettersFromValidWords =[...hfWords[i].Set]
-                //console.log(new Set(hfWords[i].Word).split())
-                //candidateWordSet += 
                 var candidateWordSet = Array.from(new Set(wordList[i].Word));
-
                 for (j = 0; j < candidateWordSet.length; j++) {
-                    var letterCheck = /^[a-zA-Z]+$/; //only alpha
+                    var letterCheck = /^[a-zA-Z]+$/; //only alpha - avoids non alpha characters getting into alletters...
                     if (letterCheck.test(candidateWordSet[j])) {  //Returns a Boolean value that indicates whether or not a pattern exists in a searched string.
                         allLettersFromValidWords += candidateWordSet[j]
                     }
                 }
 
-
-                //     //console.log(hfWords[i].Set)
-                // }
             } else {
                 eliminatedWords.push(wordList[i])
             }
@@ -200,7 +188,7 @@ function analyzeWords(userWordLength, userInputString, incorrectLetters, masterI
 }
 
 //Controls the message in the message box,
-function messages(info, userInputString, candidateWords,wordList) {
+function messages(info, userInputString, candidateWords, wordList) {
     console.log("The messages function ran", info, userInputString, candidateWords)
     if (info == true) {
         message.innerHTML = `<div ><h1><p> I have guessed your word. It is "${userInputString}".</p></h1></div>`
@@ -215,10 +203,10 @@ function messages(info, userInputString, candidateWords,wordList) {
 
     else {
         let messageToUser = '<div >'
-             if (wordList==bigWordsSubset){
-                messageToUser += `<h1><p> You are asking me to guess a rare word. This is going to take some time to think. </h1>`
-             }
-             messageToUser +=`<h1><p> Does your word have the letter ${info} ?</h1>`
+        if (wordList == bigWordsSubset) {
+            messageToUser += `<h1><p> You are asking me to guess a rare word. This is going to take some time to think. </h1>`
+        }
+        messageToUser += `<h1><p> Does your word have the letter ${info} ?</h1>`
         if (candidateWords != null) {
             console.log("It's not null")
         } else { console.log("it is null") }
@@ -238,7 +226,6 @@ function compileUserInput(userInputWordLength, firstRun) {
     if (firstRun == true) {
         for (i = 0; i < userInputWordLength; i++) {
             userInputString += " ";
-            //userInputSet.add(userInputString[i]);
         }
         console.log("1userINputstring is now:", userInputString, userInputString.length)
     } else {
@@ -256,7 +243,6 @@ function compileUserInput(userInputWordLength, firstRun) {
             } else {
                 userInputString += " "
             }
-            //console.log("2 - userINputstring is now:", userInputString)
         }
     }
     console.log("user input in various forms", i, "userInputString:", userInputString, "userINputString length:", userInputString.length)
@@ -275,13 +261,8 @@ function determineListOfIncorrectLetters(userInputString, incorrectLetters, mast
         if (!userInputString.includes(lettersGuessed[i]) && !incorrectLetters.includes(lettersGuessed[i])) {
             incorrectLetters.push(lettersGuessed[i])
         }
-        try {
-            if (!userInputString.includes(lettersGuessed[i]) && !masterIncorrectLetters.includes(lettersGuessed[i])) {
-                masterIncorrectLetters.push(lettersGuessed[i])
-            }
-        }
-        catch (err) {
-            console.log(err.message);
+        if (!userInputString.includes(lettersGuessed[i]) && !masterIncorrectLetters.includes(lettersGuessed[i])) {
+            masterIncorrectLetters.push(lettersGuessed[i])
         }
     }
     lettersGuessed;
@@ -291,14 +272,16 @@ function determineListOfIncorrectLetters(userInputString, incorrectLetters, mast
 function orderOfOperations(userInputString, incorrectLetters, masterIncorrectLetters, lettersGuessed, firstRun, wordList) {
     var { userInputString } = compileUserInput(userInputWordLength, firstRun);
     var { incorrectLetters, masterIncorrectLetters, lettersGuessed } = determineListOfIncorrectLetters(userInputString, incorrectLetters = [], masterIncorrectLetters = [], lettersGuessed);
-    var { candidateWords, eliminatedWords, allLettersFromValidWords, wordFullyGuessed, incorrectLetters, masterIncorrectLetters } = analyzeWords(Number(userInputWordLength), userInputString, incorrectLetters, masterIncorrectLetters,wordList)
-    if (candidateWords.length==0 && wordList==hfWords){
-        //console.log("The canddiateWords length is:", candidateWords.length, "the word list is", wordList)
-        var { candidateWords, eliminatedWords, allLettersFromValidWords, wordFullyGuessed, incorrectLetters, masterIncorrectLetters } = analyzeWords(Number(userInputWordLength), userInputString, incorrectLetters, masterIncorrectLetters, wordList=bigWordsSubset)
-        wordList=bigWordsSubset;
+    console.log("this is the word list:", wordList)
+    var { candidateWords, eliminatedWords, allLettersFromValidWords, wordFullyGuessed, incorrectLetters, masterIncorrectLetters } = analyzeWords(Number(userInputWordLength), userInputString, incorrectLetters, masterIncorrectLetters, wordList)
+    if (candidateWords.length == 0 && wordList == hfWords) {
+        wordList = bigWordsSubset;
+        messages(theGuess, userInputString, candidateWords, wordList)
+        var { candidateWords, eliminatedWords, allLettersFromValidWords, wordFullyGuessed, incorrectLetters, masterIncorrectLetters } = analyzeWords(Number(userInputWordLength), userInputString, incorrectLetters, masterIncorrectLetters, wordList)
+        wordList=candidateWords
     }
     chooseDefinedWord(makeAGuess(countLetters(allLettersFromValidWords), userInputString))
-    messages(theGuess, userInputString, candidateWords,wordList)
+    messages(theGuess, userInputString, candidateWords, wordList)
 
     if (wordFullyGuessed == true) {
         messages(wordFullyGuessed, userInputString, candidateWords)
@@ -322,7 +305,7 @@ function wordLengthValidator(userInputWordLength) {
     validWordLength = false;
     //var wordLengthSet = new Set();
     var testCondition = /^\d+$/; //only numerics
-    if (!testCondition.test(userInputWordLength)) {  
+    if (!testCondition.test(userInputWordLength)) {
         return validWordLength
     }
     let lengthVerification = ['1', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '2', '20', '21', '22', '23', '24', '25', '27', '28', '29', '3', '31', '4', '45', '5', '6', '7', '8', '9']
@@ -361,13 +344,22 @@ function buildGamePlayBox(userInputWordLength, theGuess) {
     //     document.getElementById(`${i}`).value = "j";
     // }
     //lettersGuessed = []
-    var masterIncorrectLetters = []
+    masterIncorrectLetters = []
     incorrectLetters = []
     //var userInputSet = new Set();
     var userInputString = "";
     return userInputString
 
 
+}
+
+function getWordsXLength(number) {
+    for (let i = 0; i < bigWords.length; i++) {
+        if (bigWords[i].Word.length == number) {
+            bigWordsSubset.push(bigWords[i])
+        }
+    }
+    return bigWordsSubset;
 }
 
 //Click events - new game and submit letters
@@ -379,18 +371,14 @@ document.getElementById("newGame").onclick = function () {    //sets the wordlen
     lettersGuessed = []
     console.log("New Game was clicked")
     var wordList = hfWords;
-    bigWordsSubset=[]
-    for (let i = 0; i<bigWords.length; i++){
-        if(bigWords[i].Word.length == userInputWordLength){
-            bigWordsSubset.push(bigWords[i])
-        }
-    }
+    bigWordsSubset = []
+    bigWordsSubset = getWordsXLength(userInputWordLength)
 
 
     if (wordLengthValidator(userInputWordLength) == false) {
         messages("invalidWordLength", userInputString = 0, candidateWords = 0)
     } else {
-        orderOfOperations(userInputString, incorrectLetters, masterIncorrectLetters, lettersGuessed, firstRun = true,wordList)
+        orderOfOperations(userInputString, incorrectLetters, masterIncorrectLetters, lettersGuessed, firstRun = true, wordList)
         userInputString = buildGamePlayBox(userInputWordLength, theGuess)
 
     }
@@ -400,6 +388,7 @@ document.getElementById("newGame").onclick = function () {    //sets the wordlen
         incorrectLetters = []
         masterIncorrectLetters;
         orderOfOperations(userInputString, incorrectLetters, masterIncorrectLetters, lettersGuessed, firstRun = false, wordList)
+        console.log(wordList, candidateWords)
     }
 }
 
