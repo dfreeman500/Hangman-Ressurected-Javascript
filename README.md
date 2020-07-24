@@ -29,9 +29,9 @@ Notes on word lists in JSON files:
 
     Of interest is an estimation chart below of a very similar dataset of words. The chart can be read as follows: 94% of 9 letter words (of which there were 57,346) would be guessed with 3 or fewer errors given a strategy of guessing the most frequently occuring letter. Although the word lists for this current program are slightly different, the general trend of increasing accuracy with longer words remains.
 
-![Percentages](images/Percentages.png) 
+[Percentages](images/Percentages.png) 
 
     
 Future Directions:
 * Add a game state option to undo guesses.
-* Have word lists stored on a server. API or user input could help detect non words or add words not on the list. This would move toward the goal of guessing all-and only all of possible English words.
+* Have word lists stored on a server. API or user input could help detect non words or add words not on the list. This would move toward the goal of guessing all-and only all of possible English words given junk data in the large catch-all word list.
