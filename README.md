@@ -27,9 +27,11 @@ Dependencies/Instructions:
 Notes on word lists in JSON files:
     I believe the list of words in hfWords.json originally was from a 5000 most frequently used word list. It may have been this website (https://www.wordfrequency.info/), but I cannot find the link to download again. In any case I removed about 700 words from the list. The words in bigWords.json were originally from https://github.com/dwyl/english-words, however I at some point merged this list with another and have also removed words that clearly weren't English as this larger list has many, many errors especially in the smaller words. This project is a combination of 2 other command line python projects. The "Errors" values are from are taken from another project and are only estimations.
 
-    Of interest is an estimation chart below of a very similar dataset of words. The chart can be read as follows: 94% of 9 letter words (of which there were 57,346) would be guessed with 3 or fewer errors given a strategy of guessing the most frequently occuring letter. Although the word lists for this current program are slightly different, the general trend of increasing accuracy with longer words remains.
+Of interest is an estimation chart below of a very similar dataset of words. The chart can be read as follows: 94% of 9 letter words (of which there were 57,346) would be guessed with 3 or fewer errors given a strategy of guessing the most frequently occuring letter. Although the word lists for this current program are slightly different, the general trend of increasing accuracy with longer words remains.
 
-[Percentages](images/Percentages.png) 
+
+
+![Percentages](images/Percentages.png) 
 
     
 Future Directions:
