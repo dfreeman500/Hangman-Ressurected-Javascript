@@ -280,7 +280,7 @@ function orderOfOperations(userInputString, incorrectLetters, masterIncorrectLet
         wordList = bigWordsSubset;
         messages(theGuess, userInputString, candidateWords, wordList)
         var { candidateWords, eliminatedWords, allLettersFromValidWords, wordFullyGuessed, incorrectLetters, masterIncorrectLetters } = analyzeWords(Number(userInputWordLength), userInputString, incorrectLetters, masterIncorrectLetters, wordList)
-        wordList=candidateWords
+        wordList = candidateWords
     }
     chooseDefinedWord(makeAGuess(countLetters(allLettersFromValidWords), userInputString))
     messages(theGuess, userInputString, candidateWords, wordList)
@@ -319,22 +319,26 @@ function wordLengthValidator(userInputWordLength) {
     return validWordLength;
 }
 
+function addLetter(i, theGuess){
+    document.getElementById(`${i}`).value = `${theGuess}`
+
+}
+
 //builds the form that user will use to input responses
 function buildGamePlayBox(userInputWordLength, theGuess) {
     var html = "";
     html += '<div class="containsLetters">'
     for (var i = 0; i < userInputWordLength; i++) {
-        html +=
+        html +=`<div class="conLandB">`+
             '<div class="letterBox" >' +
             `<form >` +
             `<input type="text" id="${i}"  maxlength="1">` +
-            '</div>'
-        // '<div class="buttonAddLetter">' +
-        // `<button type="button" id="b${i}" onclick= "() { function
-        //     document.getElementById("b${i}").value = "j";
-        //   }">${theGuess}</button>` +
+            '</div>'+
+        '<div class="buttonAddLetter">' +
+            `<button type="button" id="b${i}" onclick= addLetter(${i},"${theGuess}")>${theGuess}</button>` +
 
-        // '</div>'
+            '</div>'+
+            `</div>`
 
         // document.getElementById(`b${i}`).onclick = function () {
         //     console.log("it works") 
@@ -375,7 +379,8 @@ document.getElementById("newGame").onclick = function () {    //sets the wordlen
     masterIncorrectLetters = []
     lettersGuessed = []
     console.log("New Game was clicked")
-    var wordList = hfWords;
+    userInputWordLength < 15 ? wordList = hfWords : wordList = bigWords;
+
     bigWordsSubset = []
     bigWordsSubset = getWordsXLength(userInputWordLength)
     bigWordsSubset;

@@ -1,11 +1,11 @@
 # Hangman-Resurrected-Javascript
-Most online Hangman games have the user try to guess the the computer's word. This is a simple hangman game where the computer guesses YOUR word. (The goal would be to guess all and only-all English words). During the guessing portion the program gives estimates on how many errors it is likely to have until the word is guessed, and shows possible and eliminated words along with possible definitions for some along the way.
+Most online Hangman games have the user try to guess the the computer's word. This is a simple hangman game where the computer guesses YOUR word. During the guessing portion the program gives estimates on how many errors it is likely to have until the word is guessed, and shows possible and eliminated words along with possible definitions for some along the way.
 
 Code Louisville Requirements met:
 * Read and parse an external file (such as JSON or CSV) into your application and display some data from that in your app. - I read two JSON files and display data from them. 
 * Retrieve data from an external API and display data in your app (such as with fetch() or with AJAX) - I retrieve info from an online dictionary via Fetch.
 * Create a dictionary or list, populate it with several values, retrieve at least one value, and use it in your program - I use several arrays and retrieve values from them. 
-* Create and use a function that accepts two or more values, calculates or determines a new value based on those inputs, and returns a value - The user submits letters (or empty spaces) in various positions which starts a chain of functions which calculates possible words, a best guess, and estimation of errors.
+* Create and use a function that accepts two or more values, calculates or determines a new value based on those inputs, and returns a value - The user submits letter(s), empty spaces, and thel ength of the word all which start a chain of functions which calculates possible words, a best guess, and estimation of errors.
 
 Dependencies/Instructions:
 * Download github repository to preferred directory
@@ -33,9 +33,12 @@ Notes on word lists in JSON files:
 Some Features:
 * Validation of user word length does not allow non numbers or numbers that don't correspond to a word in the word lists
 * Validation of user input for each text box only allows lower case letters
+* Dictionary API attempts to find a definition for a "random" word that is in the candidate word and that has the current letter being guessed
+* Clicking on some words has the API attempt to find a definition
  
     
 Future Directions:
-* Have word lists stored on a server. APIs or user input could help detect non words or add words not on the list. This would move toward the goal of guessing all-and only all possible English words. Given the "junk" data in the large catch-all word list there would need to be a lot of work done.
+* Have word lists stored on a server. The large word list contains "junk" and needs to be "cleaned". APIs or user input could help detect non words or add words not on the list. This would move toward the goal of guessing all-and only all possible English words. 
 * Increase speed of processing when using the larger word list down to 1 second or less
  * Add a game state option to undo guesses which could  reduce the size of the word list per search
+* Improve look of application and UI
