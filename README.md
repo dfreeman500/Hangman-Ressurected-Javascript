@@ -1,5 +1,5 @@
 # Hangman-Resurrected-Javascript
-Simple hangman game where the computer guesses your word, gives estimates on how many errors it is likely to have until the word is guessed, and shows possible and eliminated words along with possible definitions.
+Most online Hangman games have the user try to guess the the computer's word. This is a simple hangman game where the computer guesses YOUR word. (The goal would be to guess all and only-all English words). During the guessing portion the program gives estimates on how many errors it is likely to have until the word is guessed, and shows possible and eliminated words along with possible definitions for some along the way.
 
 Code Louisville Requirements met:
 * Read and parse an external file (such as JSON or CSV) into your application and display some data from that in your app. - I read two JSON files and display data from them. 
@@ -9,16 +9,16 @@ Code Louisville Requirements met:
 
 Dependencies/Instructions:
 * Download github repository to preferred directory
+* Create an "api.js" file in the same directory as index.html and paste in the variable with the API key and save
 * Install Node.js
 * Install http-server (https://www.npmjs.com/package/http-server)
     * In Node.js Command prompt type: npm install --global http-server
     * Once installed, type: http-server [directory], ex: http-server "C:\HangmanGame"
     * Once the server is started it will state the address: ex: http://127.0.0.1:8080
-    * Copy the address into the address bar in your browser
-* Create a "api.js" in the same directory as index.html and paste the API Key and save.
+    * Copy the address into the address bar in your browser and it will open up the index.html
 * Enjoy the hangman game
 
-The user chooses a word and then tells the program how long the word is. The program reads and parses two JSON files (a smaller high frequency word list and a very large catch all word list). It determines the frequency distrubution of letters within matching words and returns a guess to the user. The user then indicates where (or not where) that guess is in their word by entering the letter in the text box - or leaving it blank. When the user clicks submit the text box values are used to determine possible candidate words, eliminated words, and the next guess which is presented to the user. The user can click on several words to possibly obtain a definition from Merriam-Webster's dictionary. (https://dictionaryapi.com/). After several series of guesses, the program will likely guess the user's word with relatively few errors. All the while, the program will present stats and estimations of errors along the way.
+The user chooses a word and then tells the program how long the word is. The program reads and parses two JSON files (a smaller high frequency word list and a very large catch most all word list). It determines the frequency distrubution of letter sets within matching words and returns a guess to the user. The user then indicates where (or not where) that guess is in their word by entering the letter in the text box - or leaving it blank. When the user clicks submit the text box values are used to determine possible candidate words, eliminated words, and the next guess which is presented to the user. The user can click on several words to possibly obtain a definition from Merriam-Webster's dictionary. (https://dictionaryapi.com/). After several series of guesses, the program will likely guess the user's word with relatively few errors. All the while, the program will present stats and estimations of errors along the way.
 
 Notes on word lists in JSON files:
 * I believe the list of words in hfWords.json originally was from a 5000 most frequently used word list. It may have been this website (https://www.wordfrequency.info/), but I cannot find the link to download again. In any case I removed about 700 words from the list. The words in bigWords.json were originally from https://github.com/dwyl/english-words, however I at some point merged this list with another and have also removed words that clearly weren't English as this larger list has many, many errors especially in the smaller words. This project builds on 2 other command line python projects involving word guessing. The "Errors" values are are taken from another project and are only estimations in this project.
@@ -29,8 +29,13 @@ Notes on word lists in JSON files:
 
 ![Percentages](images/Percentages.png) 
 
+
+Some Features:
+* Validation of user word length does not allow non numbers or numbers that don't correspond to a word in the word lists
+* Validation of user input for each text box only allows lower case letters
+ 
     
 Future Directions:
-* Add a game state option to undo guesses.
 * Have word lists stored on a server. APIs or user input could help detect non words or add words not on the list. This would move toward the goal of guessing all-and only all possible English words. Given the "junk" data in the large catch-all word list there would need to be a lot of work done.
-* Increase speed of retrieval 
+* Increase speed of processing when using the larger word list down to 1 second or less
+ * Add a game state option to undo guesses which could  reduce the size of the word list per search

@@ -475,7 +475,7 @@ function statsInfo(userInputString, candidateWords, incorrectLetters, masterInco
 
     // try {
     if (masterIncorrectLetters.length != incorrectLetters.length) {
-        stats += "You changed your mind on on a letter. That's ok... but the stats might be slightly off"
+        stats += `<p style="color:#FF0000"> You changed your mind on on a letter. That's ok... but the stats might be slightly off</p>`
     }
     // } catch (err) {
     //     console.log(err.message);
