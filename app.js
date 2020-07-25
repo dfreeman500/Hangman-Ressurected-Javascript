@@ -270,6 +270,9 @@ function determineListOfIncorrectLetters(userInputString, incorrectLetters, mast
 }
 
 function orderOfOperations(userInputString, incorrectLetters, masterIncorrectLetters, lettersGuessed, firstRun, wordList) {
+    candidateWords;
+    bigWordsSubset;
+    wordList;
     var { userInputString } = compileUserInput(userInputWordLength, firstRun);
     var { incorrectLetters, masterIncorrectLetters, lettersGuessed } = determineListOfIncorrectLetters(userInputString, incorrectLetters = [], masterIncorrectLetters = [], lettersGuessed);
     console.log("this is the word list:", wordList)
@@ -282,6 +285,9 @@ function orderOfOperations(userInputString, incorrectLetters, masterIncorrectLet
     }
     chooseDefinedWord(makeAGuess(countLetters(allLettersFromValidWords), userInputString))
     messages(theGuess, userInputString, candidateWords, wordList)
+    bigWordsSubset;
+    candidateWords;
+    wordList;
 
     if (wordFullyGuessed == true) {
         messages(wordFullyGuessed, userInputString, candidateWords)
@@ -373,7 +379,7 @@ document.getElementById("newGame").onclick = function () {    //sets the wordlen
     var wordList = hfWords;
     bigWordsSubset = []
     bigWordsSubset = getWordsXLength(userInputWordLength)
-
+    bigWordsSubset;
 
     if (wordLengthValidator(userInputWordLength) == false) {
         messages("invalidWordLength", userInputString = 0, candidateWords = 0)
