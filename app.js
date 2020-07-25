@@ -254,9 +254,8 @@ function compileUserInput(userInputWordLength, firstRun) {
     return { userInputString }
 }
 
+//The difference betwen masterIncorrectLetters and incorrectLetters shows if user changed the input from one response to the next
 function determineListOfIncorrectLetters(userInputString, incorrectLetters, masterIncorrectLetters, lettersGuessed) {
-    incorrectLetters;
-    masterIncorrectLetters;
     for (i = 0; i < lettersGuessed.length; i++) {
         if (!userInputString.includes(lettersGuessed[i]) && !incorrectLetters.includes(lettersGuessed[i])) {
             incorrectLetters.push(lettersGuessed[i])
@@ -274,7 +273,7 @@ function orderOfOperations(userInputString, incorrectLetters, masterIncorrectLet
     bigWordsSubset;
     wordList;
     var { userInputString } = compileUserInput(userInputWordLength, firstRun);
-    var { incorrectLetters, masterIncorrectLetters, lettersGuessed } = determineListOfIncorrectLetters(userInputString, incorrectLetters = [], masterIncorrectLetters = [], lettersGuessed);
+    var { incorrectLetters, masterIncorrectLetters, lettersGuessed } = determineListOfIncorrectLetters(userInputString, incorrectLetters = [], masterIncorrectLetters, lettersGuessed);
     console.log("this is the word list:", wordList)
     var { candidateWords, eliminatedWords, allLettersFromValidWords, wordFullyGuessed, incorrectLetters, masterIncorrectLetters } = analyzeWords(Number(userInputWordLength), userInputString, incorrectLetters, masterIncorrectLetters, wordList)
     if (candidateWords.length == 0 && wordList == hfWords) {
