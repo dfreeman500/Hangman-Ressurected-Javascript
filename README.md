@@ -1,5 +1,5 @@
 # Hangman-Resurrected-Javascript
-Most online Hangman games have the user try to guess the the computer's word. This is a simple hangman game where the computer guesses YOUR word. During the guessing portion the program gives estimates on how many errors it is likely to have until the word is guessed, and shows possible and eliminated words along with possible definitions for some along the way.
+Most online Hangman games have the user try to guess the the computer's word. This is a simple hangman game where the computer guesses YOUR word (and likely any you can think up). During the guessing portion the program gives estimates on how many errors it is likely to have until the word is guessed, and shows possible and eliminated words along with possible definitions for some along the way.
 
 Code Louisville Requirements met:
 * Read and parse an external file (such as JSON or CSV) into your application and display some data from that in your app. - I read two JSON files and display data from them. 
@@ -38,7 +38,8 @@ Some Features:
  
     
 Future Directions:
-* Have word lists stored on a server. The large word list contains "junk" and needs to be "cleaned". APIs or user input could help detect non words or add words not on the list. This would move toward the goal of guessing all-and only all possible English words. 
+* Have word lists stored on a server. The large word list contains "junk" words and needs to be "cleaned". APIs or user input could help detect non words or add words not on the list. This would move toward the goal of guessing all-and only all possible English words. Also, when junk words are removed, this will decrease the amount of errors needed to guess words of smaller lengths.
 * Increase speed of processing when using the larger word list down to 1 second or less
  * Add a game state option to undo guesses which could  reduce the size of the word list per search
 * Improve look of application and UI
+* Increase number of words in a row (i.e. a sentence)

@@ -284,6 +284,9 @@ function orderOfOperations(userInputString, incorrectLetters, masterIncorrectLet
     }
     chooseDefinedWord(makeAGuess(countLetters(allLettersFromValidWords), userInputString))
     messages(theGuess, userInputString, candidateWords, wordList)
+    if (firstRun == false) {
+        changeAddLetter(theGuess, userInputWordLength)
+    }
     bigWordsSubset;
     candidateWords;
     wordList;
@@ -301,7 +304,7 @@ function orderOfOperations(userInputString, incorrectLetters, masterIncorrectLet
     };
     console.log("after analyze words", "userInputString:", userInputString, "userINputString length:", userInputString.length)
     waterfalls(candidateWords, eliminatedWords)
-    statsInfo(userInputString, candidateWords, incorrectLetters, masterIncorrectLetters)
+    statsInfo(userInputString, candidateWords, incorrectLetters, masterIncorrectLetters,wordList)
 
 }
 
@@ -319,25 +322,43 @@ function wordLengthValidator(userInputWordLength) {
     return validWordLength;
 }
 
-function addLetter(i, theGuess){
+function addLetter(i, theGuess) {
     document.getElementById(`${i}`).value = `${theGuess}`
 
 }
+
+function changeAddLetter(theGuess, userInputWordLength) {
+    for (let i = 0; i < userInputWordLength; i++) {
+        let letterbox = document.getElementById(`${i}`);
+
+        if (letterbox.value == "") {
+            let a = document.getElementById(`buttonAddLetter${i}`);
+            a.appendChild(document.createElement("B"))
+            a.innerHTML = `<button type="button" id="b${i}" onclick= addLetter(${i},"${theGuess}")>${theGuess}</button>`
+        } else {
+            let a = document.getElementById(`buttonAddLetter${i}`);
+            a.appendChild(document.createElement("B"))
+            a.innerHTML = `<button type="button" id="b${i}" onclick= addLetter(${i},"${letterbox.value}")>${letterbox.value}</button>`
+        }
+    }
+}
+
+
 
 //builds the form that user will use to input responses
 function buildGamePlayBox(userInputWordLength, theGuess) {
     var html = "";
     html += '<div class="containsLetters">'
     for (var i = 0; i < userInputWordLength; i++) {
-        html +=`<div class="conLandB">`+
+        html += `<div class="conLandB" id="conLandB${i}">` +
             '<div class="letterBox" >' +
             `<form >` +
             `<input type="text" id="${i}"  maxlength="1">` +
-            '</div>'+
-        '<div class="buttonAddLetter">' +
+            '</div>' +
+            `<div class="buttonAddLetter" id="buttonAddLetter${i}">` +
             `<button type="button" id="b${i}" onclick= addLetter(${i},"${theGuess}")>${theGuess}</button>` +
 
-            '</div>'+
+            '</div>' +
             `</div>`
 
         // document.getElementById(`b${i}`).onclick = function () {
@@ -443,7 +464,7 @@ function checkStatus(response) {
 }
 
 //This function generates stats and prints them to the page 
-function statsInfo(userInputString, candidateWords, incorrectLetters, masterIncorrectLetters) {
+function statsInfo(userInputString, candidateWords, incorrectLetters, masterIncorrectLetters,wordList) {
     masterIncorrectLetters;
     incorrectLetters;
     //determines number of leters given by the user
@@ -478,33 +499,33 @@ function statsInfo(userInputString, candidateWords, incorrectLetters, masterInco
 
         `<p> You have provided me <b> ${numberOfLettersGivenByUser} </b> of the <b> ${userInputWordLength} </b> letters: <b> ${userInputString} </b></p>`
 
-    // try {
     if (masterIncorrectLetters.length != incorrectLetters.length) {
         stats += `<p style="color:#FF0000"> You changed your mind on on a letter. That's ok... but the stats might be slightly off</p>`
     }
-    // } catch (err) {
-    //     console.log(err.message);
-    // }
+
+    wordList == hfWords ? dictionary = "small" : dictionary = "big"
     stats += `<p> I have guessed <b> ${lettersGuessed.length} </b> time(s) and they are <b> ${lettersGuessed} </b>.</p>` +
         `<p> I have guessed incorrectly <b> ${incorrectLetters.length} </b> time(s) given that you've said the following letters are incorrect:<b> ${incorrectLetters}</b></p>` +
         `<p> At the present time, I feel VERY confident that I will guess your word in <b> ${(Math.max(...listOfErrorNumbers) > incorrectLetters.length ? Math.max(...listOfErrorNumbers) : incorrectLetters.length)}</b> or fewer errors</p>` +
         `<p> At the present time I feel that I will <b>likely</b> guess your word using <b> ${((Math.ceil(sum / candidateWords.length)) > incorrectLetters.length ? (Math.ceil(sum / candidateWords.length)) : incorrectLetters.length)} </b> or fewer errors </p>` +
+        `<p> I am using the ${dictionary} dictionary`+
         '</div>'
     statsBox.innerHTML = stats;
 }
 
 
+//append child //create element     
+// https://developer.mozilla.org/en-US/docs/Web/API/Node/appendChild
 
 //This function prints the candidate words and eliminated words with a link to check their definition
 function waterfalls(candidateWords, eliminatedWords) {
-    let candidateWordsVariable = "Candidate Words: ";
+    let candidateWordsVariable = candidateWords.length + " Candidate Words: ";
     if (candidateWords != null) {
         for (let i = 0; i < candidateWords.length; i++) {
 
             candidateWordsVariable += `<a id=${candidateWords[i].Word} href=#>${candidateWords[i].Word}</a>`
             candidateWordsVariable += " "
-            //append child //create element     
-            // https://developer.mozilla.org/en-US/docs/Web/API/Node/appendChild
+
             if (i > 300) {
                 break
             }
@@ -530,7 +551,7 @@ function waterfalls(candidateWords, eliminatedWords) {
 
     }
 
-    let eliminatedWordsVariable = "Eliminated Words: ";
+    let eliminatedWordsVariable = eliminatedWords.length+ " Eliminated Words: ";
     if (eliminatedWords != null) {
         for (let i = 0; i < eliminatedWords.length; i++) {
             eliminatedWordsVariable += `<a id=${eliminatedWords[i].Word} href=#>${eliminatedWords[i].Word}</a>`
