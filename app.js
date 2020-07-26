@@ -25,7 +25,7 @@ var bigWordsSubset = []
 
 
 
-
+//REPLACE WITH FETCH() as XMLHttpReuqest has deprecated portions, also put in function
 let bigWordsRequest = new XMLHttpRequest();
 bigWordsRequest.open("GET", "bigWords.json", false);
 bigWordsRequest.send(null)
@@ -274,7 +274,7 @@ function orderOfOperations(userInputString, incorrectLetters, masterIncorrectLet
     wordList;
     var { userInputString } = compileUserInput(userInputWordLength, firstRun);
     var { incorrectLetters, masterIncorrectLetters, lettersGuessed } = determineListOfIncorrectLetters(userInputString, incorrectLetters = [], masterIncorrectLetters, lettersGuessed);
-    console.log("this is the word list:", wordList)
+    //console.log("this is the word list:", wordList)
     var { candidateWords, eliminatedWords, allLettersFromValidWords, wordFullyGuessed, incorrectLetters, masterIncorrectLetters } = analyzeWords(Number(userInputWordLength), userInputString, incorrectLetters, masterIncorrectLetters, wordList)
     if (candidateWords.length == 0 && wordList == hfWords) {
         wordList = bigWordsSubset;
@@ -332,13 +332,13 @@ function changeAddLetter(theGuess, userInputWordLength) {
         let letterbox = document.getElementById(`${i}`);
 
         if (letterbox.value == "") {
-            let a = document.getElementById(`buttonAddLetter${i}`);
-            a.appendChild(document.createElement("B"))
-            a.innerHTML = `<button type="button" id="b${i}" onclick= addLetter(${i},"${theGuess}")>${theGuess}</button>`
+            let temp = document.getElementById(`buttonAddLetter${i}`);
+            temp.appendChild(document.createElement("B"))
+            temp.innerHTML = `<button type="button" id="b${i}" onclick= addLetter(${i},"${theGuess}")>${theGuess}</button>`
         } else {
-            let a = document.getElementById(`buttonAddLetter${i}`);
-            a.appendChild(document.createElement("B"))
-            a.innerHTML = `<button type="button" id="b${i}" onclick= addLetter(${i},"${letterbox.value}")>${letterbox.value}</button>`
+            let temp = document.getElementById(`buttonAddLetter${i}`);
+            temp.appendChild(document.createElement("B"))
+            temp.innerHTML = `<button type="button" id="b${i}" onclick= addLetter(${i},"${letterbox.value}")>${letterbox.value}</button>`
         }
     }
 }
@@ -500,21 +500,25 @@ function statsInfo(userInputString, candidateWords, incorrectLetters, masterInco
         `<p> You have provided me <b> ${numberOfLettersGivenByUser} </b> of the <b> ${userInputWordLength} </b> letters: <b> ${userInputString} </b></p>`
 
     if (masterIncorrectLetters.length != incorrectLetters.length) {
-        stats += `<p style="color:#FF0000"> You changed your mind on on a letter. That's ok... but the stats might be slightly off</p>`
+        stats += `<p style="color:#FF0000"> You changed your mind on on a letter. That's ok... but the stats might be slightly off.</p>`
     }
 
     wordList == hfWords ? dictionary = "small" : dictionary = "big"
     stats += `<p> I have guessed <b> ${lettersGuessed.length} </b> time(s) and they are <b> ${lettersGuessed} </b>.</p>` +
         `<p> I have guessed incorrectly <b> ${incorrectLetters.length} </b> time(s) given that you've said the following letters are incorrect:<b> ${incorrectLetters}</b></p>` +
-        `<p> At the present time, I feel VERY confident that I will guess your word in <b> ${(Math.max(...listOfErrorNumbers) > incorrectLetters.length ? Math.max(...listOfErrorNumbers) : incorrectLetters.length)}</b> or fewer errors</p>` +
-        `<p> At the present time I feel that I will <b>likely</b> guess your word using <b> ${((Math.ceil(sum / candidateWords.length)) > incorrectLetters.length ? (Math.ceil(sum / candidateWords.length)) : incorrectLetters.length)} </b> or fewer errors </p>` +
-        `<p> I am using the ${dictionary} dictionary`+
-        '</div>'
+        `<p> At the present time, I feel VERY confident that I will guess your word in <b> ${(Math.max(...listOfErrorNumbers) > incorrectLetters.length ? Math.max(...listOfErrorNumbers) : incorrectLetters.length)}</b> or fewer errors.</p>` +
+        `<p> At the present time I feel that I will <b>likely</b> guess your word using <b> ${((Math.ceil(sum / candidateWords.length)) > incorrectLetters.length ? (Math.ceil(sum / candidateWords.length)) : incorrectLetters.length)} </b> or fewer errors. </p>` +
+        `<p> I am using the ${dictionary} dictionary</p>`
+    if (dictionary=="big"){
+        stats += `<p style="color:#FF0000">... it may take me a little longer to think.</p>`
+    }
+
+        stats +='</div>'
     statsBox.innerHTML = stats;
 }
 
 
-//append child //create element     
+//append child //create element  -- get rid of double loops
 // https://developer.mozilla.org/en-US/docs/Web/API/Node/appendChild
 
 //This function prints the candidate words and eliminated words with a link to check their definition
