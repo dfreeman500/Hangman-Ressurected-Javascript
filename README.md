@@ -31,15 +31,16 @@ Notes on word lists in JSON files:
 
 
 Some Features:
-* Validation of user word length does not allow non numbers or numbers that don't correspond to a word in the word lists
+* Validation of the user word length does not allow non numbers or numbers that don't correspond to a word in the word lists
 * Validation of user input for each text box only allows lower case letters
 * Dictionary API attempts to find a definition for a "random" word that is in the candidate word and that has the current letter being guessed
 * Clicking on some words has the API attempt to find a definition
-* Can click to add the newest guess to an empty text box or enter manually
+* Can click button to add the newest guess to an empty text box or enter manually
+* Background color of game play area progressively moves from green to red with increase in errors
  
     
 Future Directions:
-* Have word lists stored on a server. The large word list contains so many "junk" words and needs to be "cleaned". APIs or user input could help detect non words or add words not on the list. This would move toward the goal of guessing all-and only all possible English words. Also, when junk words are removed, this will decrease the amount of errors needed to guess words of smaller lengths.
+* Have word lists stored on a server. The large word list contains many "junk" words and needs to be "cleaned". APIs or user input could help detect non words or add words not on the list. This would move toward the goal of guessing all-and only all possible English words. Also, when junk words are removed, this will decrease the amount of errors needed to guess words of smaller lengths.
 * Increase speed of processing when using the larger word list down to 1 second or less
  * Add a game state option to undo guesses which could reduce the size of the word list per search
 * Improve look of application and UI

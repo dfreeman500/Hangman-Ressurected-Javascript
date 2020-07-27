@@ -515,7 +515,14 @@ function statsInfo(userInputString, candidateWords, incorrectLetters, masterInco
 
         stats +='</div>'
     statsBox.innerHTML = stats;
+
+    let errorColors =["#5be162","#69ce5a","#76bb52","#84a94a","#929641","#9f8339","#ad7131","#bb5e29","#c84b21","#d63818","#e42510","#f11308","#ff0000" ]
+    let background = document.querySelector('.gamePlay') 
+    background.style.backgroundColor= errorColors[incorrectLetters.length]
+    let b = background.style.backgroundColor
+    b
 }
+// 
 
 
 //append child //create element  -- get rid of double loops

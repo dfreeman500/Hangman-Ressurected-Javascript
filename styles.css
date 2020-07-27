@@ -63,6 +63,8 @@ min-height: auto;
     flex-direction: column;
     text-align:center;
     margin: auto;
+    border-radius: 25px;
+
 
 }
 .containsLetters{
@@ -72,8 +74,18 @@ min-height: auto;
 
 
 }
-.submitLettersButton{
-    vertical-align: auto;
+#submitLettersButton{
+    /* vertical-align: auto;
+    max-width: 300px;
+    text-align: center;
+    justify-content: center; */
+    margin: auto;
+    margin-bottom: 10px;
+    border-radius: 25px;
+    max-width: 300px;
+
+
+
 }
 
 .letterBox{
@@ -147,7 +159,7 @@ span {
     margin-top: -8px;
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 800px) {
       .OuterHorizontalBox{
           flex-direction:column;
           order: -1;
