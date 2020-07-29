@@ -17,6 +17,11 @@
     width:30px;
 }
 
+#newGame {
+    box-shadow: 2px 2px;
+
+}
+
 .main{
     border: 1px solid green;
 
@@ -52,6 +57,7 @@ min-height: auto;
     border: 1px solid brown;
     max-height: 400px;
     overflow:hidden;
+    flex: auto;
 
 
 
@@ -83,6 +89,7 @@ min-height: auto;
     margin-bottom: 10px;
     border-radius: 25px;
     max-width: 300px;
+    box-shadow: 2px 2px;
 
 
 
@@ -99,6 +106,8 @@ min-height: auto;
     
 .buttonAddLetter{
     vertical-align: auto;
+    box-shadow: 2px 2px;
+
 }
 
 .LowerWaterfall{

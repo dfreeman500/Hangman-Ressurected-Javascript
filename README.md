@@ -1,5 +1,5 @@
 # Hangman-Resurrected-Javascript
-Most online Hangman games have the user try to guess the the computer's word. This is a simple hangman game where the computer guesses YOUR word. During the guessing portion the program gives estimates on how many errors it is likely to have until the word is guessed, and shows possible and eliminated words along with possible definitions for some along the way.
+Most online Hangman games have the user try to guess the the computer's word. This is a simple hangman game where the computer guesses YOUR word - or you can use it to solve the other hangman games on the internet. During the guessing portion the program gives estimates on how many errors it is likely to have until the word is guessed, and shows possible and eliminated words along with possible definitions for some along the way.
 
 Code Louisville Requirements met:
 * Read and parse an external file (such as JSON or CSV) into your application and display some data from that in your app. - I read two JSON files and display data from them. 
@@ -23,7 +23,7 @@ The user chooses a word and then tells the program how long the word is. The pro
 Notes on word lists in JSON files:
 * I believe the list of words in hfWords.json originally was from a 5000 most frequently used word list. It may have been this website (https://www.wordfrequency.info/), but I cannot find the link to download again. In any case I removed about 700 words from the list. The words in bigWords.json were originally from https://github.com/dwyl/english-words, however I at some point merged this list with another and have also removed words that clearly weren't English as this larger list has many, many, "junk" words in it especially in the smaller words. This project builds on 2 other command line python projects involving word guessing. The "Errors" values are are taken from another project and are only estimations in this project.
 
-* Of interest is an estimation chart below of a different but similar dataset of words. The chart can be read as follows: 94% of 9 letter words (of which there were 57,346) would be guessed with 3 or fewer errors given a strategy of guessing the most frequently occuring letter. Although the word lists for this current program differ, the general trend of increasing accuracy with longer words remains. 
+* Of interest is a probability chart below of a different but similar dataset of words. The chart can be read as follows: 94% of 9 letter words (of which there were 57,346) would be guessed with 3 or fewer errors given a strategy of guessing the most frequently occuring letter. Although the word lists for this current program differ, the general trend of increasing accuracy with longer words remains. Smaller words with low frequency letters (ex: j,z,x) will have increased errors given this strategy.
 
 
 
