@@ -449,15 +449,15 @@ function generateDefinitionDisplay(data, word, wordFullyGuessed, requestFromWher
     console.log(data);
     if (data[0] || data[0].shortdef[0]) {    //checks to make sure a valid definition came through and not suggestions     
         if (wordFullyGuessed == true) {
-            definitionApiWord.innerHTML = `Your word is ${word}:`
+            definitionApiWord.innerHTML = `Your word is <b>${word}</b>:`
         } else if (requestFromWhere === "userInitiated") {
-            definitionApiWord.innerHTML = `You wish to know the the definition of the word ${word}:`
+            definitionApiWord.innerHTML = `You wish to know the the definition of the word <b>${word}</b>:`
         } else {
-            definitionApiWord.innerHTML = "I'm not saying this is your word, but it could be: " + word; //data[0].hwi.hw;  // + " " + data[0].shortdef[0]; //word
+            definitionApiWord.innerHTML = "I'm not saying this is your word, but it could be: " + "<b>" + word + "</b>"; //data[0].hwi.hw;  // + " " + data[0].shortdef[0]; //word
         }
         let listOfDefinitions = "";
-        for (let i = 0; i < data[0].shortdef.length; i++) { listOfDefinitions += i + 1 + ".) " + data[0].shortdef + " " }
-        definitionApiDefinitions.innerHTML = "Definition: " + listOfDefinitions;
+        for (let i = 0; i < data[0].shortdef.length; i++) { listOfDefinitions += "<p>" + (i + 1) + ".) " + data[0].shortdef[i] + " " + "</p>"  }
+        definitionApiDefinitions.innerHTML = "<b>Definition</b>: " + listOfDefinitions;
     } else {
         console.log("A minor error: A single definition didn't come through")
         definitionApiWord.innerHTML = "The dictionary is not pleased"
