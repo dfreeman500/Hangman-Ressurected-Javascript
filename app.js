@@ -49,38 +49,13 @@ var hfWords = JSON.parse(hfWordsRequest.responseText)
 console.log(hfWords)
 
 
-let alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
-var html = "this is it";
 
-let h = 'h'
-let a1 = 'a'
-let n1 = 'n'
-let g = 'g'
-let m = 'm'
-let a2 = 'a'
-let n2 = 'n'
-// var display = setTimeout(function () { h = alphabet[Math.floor(Math.random() * alphabet.length)] }, 500);
-// html = alphabet[Math.floor(Math.random() * alphabet.length)]
-// gamePlay.innerHTML = html;  //injects the html into the gameplay section
-
-changingDisplay = ['hangman', 'hzmfnem', 'eqngian', ' a gm  ']
-
-// function changeDisplay() {
-    
-// }
 
 var display = setInterval(function (){gamePlay.innerHTML = `<h1>` + bigWords[Math.floor(Math.random() * bigWords.length)].Word + `</h1>`}, 250);
 
 
 
-// gamePlay.innerHTML = html;  //injects the html into the gameplay section
 
-// while(html != 'h'){
-
-//     setTimeout(function() {  html = alphabet[Math.floor(Math.random() * alphabet.length)]}, 100);
-//     gamePlay.innerHTML = html;  //injects the html into the gameplay section
-
-// }
 
 
 //finds all of the letters in the possible words and counts them, returns an array of letters presented in frequency order w/o counts
@@ -568,7 +543,7 @@ function statsInfo(userInputString, candidateWords, incorrectLetters, masterInco
 function waterfalls(candidateWords, eliminatedWords) {
 
 
-    let candidateWordsVariable = candidateWords.length + " Candidate Words: ";
+    let candidateWordsVariable = "<b>  " + candidateWords.length + "</b>" + " Candidate Words: ";
     if (candidateWords != null) {
         for (let i = 0; i < candidateWords.length; i++) {
 
@@ -600,7 +575,7 @@ function waterfalls(candidateWords, eliminatedWords) {
 
     }
 
-    let eliminatedWordsVariable = eliminatedWords.length + " Eliminated Words: ";
+    let eliminatedWordsVariable = "<b>" + "  " + eliminatedWords.length + "</b>" + " Eliminated Words: ";
     if (eliminatedWords != null) {
         for (let i = 0; i < eliminatedWords.length; i++) {
             eliminatedWordsVariable += `<a id=${eliminatedWords[i].Word} href=#>${eliminatedWords[i].Word}</a>`

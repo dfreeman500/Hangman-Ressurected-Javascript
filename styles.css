@@ -2,8 +2,10 @@
     background-color: black;
 } */
 
+
+
 .name{
-    text-shadow: 2px 2px darkgray;
+    text-shadow: 2px 2px  darkgray;
 }
 
 .background{
@@ -11,74 +13,106 @@
 }
 
 .name{
-    border: 1px solid blue;
+    /* border: 1px solid blue; */
     text-align: center;
+    box-shadow: 2px 2px 5px 1px;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 15px 5px;
+
 
 }
 
 .newGameTextBox {
-    border: 1 px solid red;
+    /* border: 1 px solid red; */
     width:30px;
 }
 
 #newGame {
     box-shadow: 2px 2px;
 
+
 }
 
 .main{
-    border: 1px solid green;
+    /* border: 1px solid green; */
 
 }
 .newGame{
-    border: 1px solid violet;
+    /* border: 1px solid violet; */
+    box-shadow: 2px 2px 5px 1px;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 5px;
+
+
 
 }
 .Messages{
-    border: 1px solid silver;
+    /* border: 1px solid silver; */
     text-align: center;
+    box-shadow: 2px 2px 5px 1px;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 5px;
+
+
+
+
 
 }
 .OuterHorizontalBox{
     display:flex;
     flex-direction:row;
-    border: 1px solid black;
+    /* border: 1px solid black; */
 
 }
 .StatsBox{
-    border: 1px solid blueviolet;
+    /* border: 1px solid blueviolet; */
     min-width: 25%;
     max-width: 25%;
-    border-radius: 25px;
-    box-shadow: 2px 2px;
+    box-shadow: 2px 2px 5px 1px;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 5px;
+
+
 
 }
 .CentralBox{
-    border: 1px solid orangered;
+    /* border: 1px solid orangered; */
 min-width: 50%;
 max-width: 50%;
 min-height: auto;
 }
 .UpperWaterfall{
-    border: 1px solid brown;
+    /* border: 1px solid brown; */
     max-height: 400px;
     overflow:hidden;
     flex: auto;
-    border-radius: 25px;
-    box-shadow: 2px 2px;
+    box-shadow: 2px 2px 5px 1px;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 5px;
+
+
 
 
 
 }
 .gamePlay{
-    border: 1px solid grey;
+    /* border: 1px solid grey; */
     min-height: 200px;
     display:flex;
     flex-direction: column;
     text-align:center;
     margin: auto;
-    border-radius: 25px;
-    box-shadow: 2px 2px;
+    box-shadow: 2px 2px 5px 1px;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 5px;
+
+
 
 
 
@@ -121,10 +155,14 @@ min-height: auto;
 }
 
 .LowerWaterfall{
-    border: 1px solid red;
+    /* border: 1px solid red; */
     min-height: 400px;
-    border-radius: 25px;
-    box-shadow: 2px 2px;
+    box-shadow: 2px 2px 5px 1px;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 5px;
+    
+
 
 }
 
@@ -132,29 +170,42 @@ min-height: auto;
 min-height: 300px;
 }
 
+.definitionApiIntro {
+    box-shadow: 2px 2px 5px 1px;
+    border-radius: 10px;
+    padding: 10px;
 
+
+}
 
 .definitionApiBox {
-    min-width: 25%;
-    max-width: 25%;
-    border: 1px solid red;
+    min-width: 23%;
+    max-width: 23%;
+    /* border: 1px solid red; */
     text-align: left;
     display: flex;
     flex-direction: column;
-    border-radius: 25px;
-    box-shadow: 2px 2px;
+    box-shadow: 2px 2px 5px 1px;
+    border-radius: 10px;
+    margin: 5px;
+
 
   }
 
 .definitionApiWord{
-    border: 2px solid yellow;
+    /* border: 2px solid yellow; */
+    padding: 10px;
+    border-bottom: 1px solid black;
+
 }
 
 .definitionApiDefinitions{
-    border: 2px solid green;
+    /* border: 2px solid green; */
+    padding: 10px;
+
 }
 
-span {
+/* span {
     border-radius: 5px;
     display: none;
     font-size: 1.3em;
@@ -180,7 +231,7 @@ span {
     border-right-color: #2F558E;
     border-width: 8px;
     margin-top: -8px;
-  }
+  } */
 
   @media (max-width: 800px) {
       .OuterHorizontalBox{
@@ -207,5 +258,10 @@ span {
 
       .StatsBox{
           min-width: 100%;
+      }
+
+      .gamePlay{
+        min-width: 100%;
+
       }
   }

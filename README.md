@@ -40,7 +40,7 @@ Some Features:
  
     
 Future Directions:
-* Have word lists stored on a server. The large word list contains many "junk" words and needs to be "cleaned". APIs or user input could help detect non words or add words not on the list. This would move toward the goal of guessing all-and only all possible English words. Also, when junk words are removed, this will decrease the amount of errors needed to guess words of smaller lengths.
+* Have word lists stored on a server. The large word list contains many "junk" words and needs to be "cleaned". APIs or user input could help detect non words or add words not on the list (ex: pescatarian). This would move toward the goal of guessing all-and only all possible English words. Also, when junk words are removed, this will decrease the amount of errors needed to guess words of smaller lengths.
 * Increase speed of processing when using the larger word list down to 1 second or less
  * Add a game state option to undo guesses which could reduce the size of the word list per search
 * Improve look of application and UI
