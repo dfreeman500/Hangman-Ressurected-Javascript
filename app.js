@@ -25,6 +25,14 @@ var userInputWordLength;
 let listOfWords = []
 var bigWordsSubset = []
 
+fetchData(`https://dictionaryapi.com/api/v3/references/collegiate/json/hangman?key=${apiKey}`) //fetch for dictionary definition
+.then(data => generateDefinitionDisplay(data, word="hangman", wordFullyGuessed = true, requestFromWhere = "notUserInitiated"));
+
+setTimeout(function (){
+    fetchData(`https://dictionaryapi.com/api/v3/references/collegiate/json/resurrected?key=${apiKey}`) //fetch for dictionary definition
+.then(data => generateDefinitionDisplay(data, word="resurrected", wordFullyGuessed = true, requestFromWhere = "notUserInitiated"))
+},10000)
+
 
 
 //REPLACE WITH FETCH() as XMLHttpReuqest has deprecated portions, also put in function
