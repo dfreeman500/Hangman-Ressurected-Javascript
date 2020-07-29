@@ -26,12 +26,12 @@ let listOfWords = []
 var bigWordsSubset = []
 
 fetchData(`https://dictionaryapi.com/api/v3/references/collegiate/json/hangman?key=${apiKey}`) //fetch for dictionary definition
-.then(data => generateDefinitionDisplay(data, word="hangman", wordFullyGuessed = true, requestFromWhere = "notUserInitiated"));
+    .then(data => generateDefinitionDisplay(data, word = "hangman", wordFullyGuessed = true, requestFromWhere = "notUserInitiated"));
 
-setTimeout(function (){
+var defDisplay = setTimeout(function () {
     fetchData(`https://dictionaryapi.com/api/v3/references/collegiate/json/resurrected?key=${apiKey}`) //fetch for dictionary definition
-.then(data => generateDefinitionDisplay(data, word="resurrected", wordFullyGuessed = true, requestFromWhere = "notUserInitiated"))
-},10000)
+        .then(data => generateDefinitionDisplay(data, word = "resurrected", wordFullyGuessed = true, requestFromWhere = "notUserInitiated"))
+}, 10000)
 
 
 
@@ -48,19 +48,40 @@ hfWordsRequest.send(null)
 var hfWords = JSON.parse(hfWordsRequest.responseText)
 console.log(hfWords)
 
-function hangmanStartup() {
-    let alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
-    var html = "this is it";
-    gamePlay.innerHTML = html;  //injects the html into the gameplay section
 
-    // while(html != "h"){
+let alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+var html = "this is it";
 
-    //     setTimeout(() => {  html = alphabet[Math.floor(Math.random() * alphabet.length)]}, 250);
-    //     gamePlay.innerHTML = html;  //injects the html into the gameplay section
+let h = 'h'
+let a1 = 'a'
+let n1 = 'n'
+let g = 'g'
+let m = 'm'
+let a2 = 'a'
+let n2 = 'n'
+// var display = setTimeout(function () { h = alphabet[Math.floor(Math.random() * alphabet.length)] }, 500);
+// html = alphabet[Math.floor(Math.random() * alphabet.length)]
+// gamePlay.innerHTML = html;  //injects the html into the gameplay section
 
-    // }
-}
-hangmanStartup()
+changingDisplay = ['hangman', 'hzmfnem', 'eqngian', ' a gm  ']
+
+// function changeDisplay() {
+    
+// }
+
+var display = setInterval(function (){gamePlay.innerHTML = `<h1>` + bigWords[Math.floor(Math.random() * bigWords.length)].Word + `</h1>`}, 250);
+
+
+
+// gamePlay.innerHTML = html;  //injects the html into the gameplay section
+
+// while(html != 'h'){
+
+//     setTimeout(function() {  html = alphabet[Math.floor(Math.random() * alphabet.length)]}, 100);
+//     gamePlay.innerHTML = html;  //injects the html into the gameplay section
+
+// }
+
 
 //finds all of the letters in the possible words and counts them, returns an array of letters presented in frequency order w/o counts
 function countLetters(string) {
@@ -408,6 +429,8 @@ function getWordsXLength(number) {
 //Click events - new game and submit letters
 document.getElementById("newGame").onclick = function () {    //sets the wordlength variable upon new game click and sets the html for gameplay
     userInputWordLength = document.getElementById("numberOfLetters").value; //gets value of user input text box
+    clearTimeout(defDisplay);
+    clearInterval(display);
     var userInputString = "";
     incorrectLetters = []
     masterIncorrectLetters = []
@@ -458,7 +481,7 @@ function generateDefinitionDisplay(data, word, wordFullyGuessed, requestFromWher
             definitionApiWord.innerHTML = "I'm not saying this is your word, but it could be: " + word; //data[0].hwi.hw;  // + " " + data[0].shortdef[0]; //word
         }
         let listOfDefinitions = "";
-        for (let i = 0; i < data[0].shortdef.length; i++) { listOfDefinitions += i + 1 + ".) " + data[0].shortdef[i] + " " }
+        for (let i = 0; i < data[0].shortdef.length; i++) { listOfDefinitions += i + 1 + ".) " + data[0].shortdef + " " }
         definitionApiDefinitions.innerHTML = "Definition: " + listOfDefinitions;
     } else {
         console.log("A minor error: A single definition didn't come through")
@@ -618,7 +641,7 @@ function waterfalls(candidateWords, eliminatedWords) {
     // catch (err) {
     //     console.log(err.message);
     // }
- 
+
 
 // }
 
