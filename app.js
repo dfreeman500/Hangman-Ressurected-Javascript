@@ -428,7 +428,8 @@ function fetchData(url) { // Will use this as a general fetch -ex: dictionary de
     return fetch(url)
         .then(checkStatus) //looks for status errors
         .then(res => res.json()) // parses
-        .catch(error => console.log('There was a problem attempting to retrieve this information:', error))
+        // .catch(error => console.log('There was a problem attempting to retrieve this information:', error))
+        .catch(data => generateDefinitionDisplay(data=["Couldn't retrieve the word from Merriam Webster"], word, wordFullyGuessed = false, requestFromWhere = "wordFullyGuessed"))
     // .then(data => generateDefinitionDisplay(data=["Couldn't retrieve the word from Merriam Webster"], userInputString="", wordFullyGuessed = false, requestFromWhere = "wordFullyGuessed"))
 }
 
@@ -455,23 +456,18 @@ function generateDefinitionDisplay(data, word, wordFullyGuessed, requestFromWher
         try{
             for (let i = 0; i < data[0].shortdef.length; i++) { listOfDefinitions += "<p>" + (i + 1) + ".) " + data[0].shortdef[i] + " " + "</p>" }
             definitionApiDefinitions.innerHTML = "<b>Definition</b>: " + listOfDefinitions;
-            definitionApiDefinitions.innerHTML += `<p><a href="http://www.google.com/search?q=${word}" target="_blank">Google: ${word}</a></p>`
+            definitionApiDefinitions.innerHTML += `<p><a href="http://www.google.com/search?q=${word}" target="_blank">Google the word: ${word}</a></p>`
 
         }
-
-
         catch (err) {
             definitionApiDefinitions.innerHTML = "I couldn't come through with a definition via Merriam Webster's Dictionary. Here's a link to look it up on Google.";
             definitionApiDefinitions.innerHTML += `<p><a href="http://www.google.com/search?q=${word}" target="_blank">${word}</a></p>`
             console.log(err.message);
         }
-
     } else {
         console.log("A minor error: A single definition didn't come through")
         definitionApiWord.innerHTML = "The dictionary is not pleased"
     }
-
-
 }
 
 function checkStatus(response) {

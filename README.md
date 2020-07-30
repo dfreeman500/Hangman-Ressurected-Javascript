@@ -36,7 +36,7 @@ Some Features:
 * Validation of the user word length does not allow non numbers or numbers that don't correspond to a word in the word lists
 * Validation of user input for each text box only allows lower case letters
 * Dictionary API attempts to find a definition for a "random" word that is in the candidate word and that has the current letter being guessed
-* Clicking on some words has the API attempt to find a definition
+* Clicking on some words has the API attempt to find a definition, google search link is provided for words even when MW dictioanry can't provide definition
 * Can click button to add the newest guess to an empty text box or enter manually
 * Background color of game play area progressively moves from green to red with increase in errors
  
