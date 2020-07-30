@@ -47,3 +47,7 @@ Future Directions:
  * Add a game state option to undo guesses which could reduce the size of the word list per search
 * Improve look of application and UI
 * Increase number of words - i.e. the program could guess a full sentence instead of a single word
+
+
+
+![Percentages](images/jazz.gif) 

@@ -3,10 +3,10 @@
 } */
 
 
-
+/* 
 .name{
     text-shadow: 2px 2px  darkgray;
-}
+} */
 
 .background{
     background-color:lightgrey;
@@ -19,7 +19,16 @@
     border-radius: 10px;
     padding: 10px;
     margin: 15px 5px;
+    text-shadow: 2px 2px  darkgray;
+    background-color:lightgrey;
 
+
+
+
+}
+
+.main{
+    background-color:lightgrey;
 
 }
 
@@ -34,10 +43,7 @@
 
 }
 
-.main{
-    /* border: 1px solid green; */
 
-}
 .newGame{
     /* border: 1px solid violet; */
     box-shadow: 2px 2px 5px 1px;

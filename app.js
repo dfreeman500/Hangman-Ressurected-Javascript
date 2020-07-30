@@ -468,6 +468,9 @@ function generateDefinitionDisplay(data, word, wordFullyGuessed, requestFromWher
         console.log("A minor error: A single definition didn't come through")
         definitionApiWord.innerHTML = "The dictionary is not pleased"
     }
+
+    // fetchData(`https://en.wikipedia.org/w/api.php?action=query&titles=${word}&prop=pageimages&format=json&pithumbsize=100`)
+    //     .then(console.log(res.json))
 }
 
 function checkStatus(response) {
