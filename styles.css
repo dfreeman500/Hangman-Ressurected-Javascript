@@ -272,8 +272,8 @@ min-height: 300px;
           max-width: 100%;
       }
 
-      /* .gamePlay{
-        min-width: 100%;
+       .gamePlay{
+        max-width: 100%;
 
       }
   }
