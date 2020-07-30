@@ -119,8 +119,10 @@ min-height: auto;
 }
 .containsLetters{
     display:flex;
+    flex-basis: auto;
     text-align:center;
     margin: auto;
+
 
 
 }

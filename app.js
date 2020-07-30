@@ -1,5 +1,3 @@
-// const { parallel } = require("async");
-
 var gamePlay = document.querySelector('.gamePlay');
 const definitionApiIntro = document.querySelector('.definitionApiIntro');
 const definitionApiWord = document.querySelector('.definitionApiWord');
@@ -13,18 +11,15 @@ const LowerWaterfall = document.querySelector('.LowerWaterfall');
 // let wordLists = [hfWords, bigWords]; //List of variable pointing to the different word lists
 var candidateWords = []
 let eliminatedWords = []
-
 var lettersGuessed = []
 var incorrectLetters = []
 var masterIncorrectLetters = []
-
 var letterFrequency = []
-
-
 var userInputWordLength;
-let listOfWords = []
 var bigWordsSubset = []
 
+
+//Upon start up this shows definitions for "hangman" and then after a delay displays "resurrected"
 fetchData(`https://dictionaryapi.com/api/v3/references/collegiate/json/hangman?key=${apiKey}`) //fetch for dictionary definition
     .then(data => generateDefinitionDisplay(data, word = "hangman", wordFullyGuessed = true, requestFromWhere = "notUserInitiated"));
 
@@ -35,7 +30,7 @@ var defDisplay = setTimeout(function () {
 
 
 
-//REPLACE WITH FETCH() as XMLHttpReuqest has deprecated portions, also put in function
+//REPLACE WITH FETCH() as XMLHttpReuqest has deprecated portions, also put in function for DRY
 let bigWordsRequest = new XMLHttpRequest();
 bigWordsRequest.open("GET", "bigWords.json", false);
 bigWordsRequest.send(null)
@@ -50,12 +45,8 @@ console.log(hfWords)
 
 
 
-
-var display = setInterval(function (){gamePlay.innerHTML = `<h1>` + bigWords[Math.floor(Math.random() * bigWords.length)].Word + `</h1>`}, 250);
-
-
-
-
+// Upon initial startup, this displays random words from the large word list. Choosing word length and starting a new game clears the interval
+var display = setInterval(function () { gamePlay.innerHTML = `<h1>` + bigWords[Math.floor(Math.random() * bigWords.length)].Word + `</h1>` }, 250);
 
 
 //finds all of the letters in the possible words and counts them, returns an array of letters presented in frequency order w/o counts
@@ -63,7 +54,6 @@ function countLetters(string) {
     let letterMap = {}
     let letterArray = []
     let valuesArray = []
-    //let maxLetterValue = 0
 
     //creates a map with Frequency:Letter
     for (let char of string) {
@@ -80,7 +70,6 @@ function countLetters(string) {
     var valueSet = new Set(valuesArray)
     var newSortedLettersFromSet = [...valueSet]
     newSortedLettersFromSet.sort(function (a, b) { return b - a }); //Sorts the set from largest to smallest
-
     let newSortedLetters = []
 
     ///iterate through the set of frequency numbers by value
@@ -440,6 +429,7 @@ function fetchData(url) { // Will use this as a general fetch -ex: dictionary de
         .then(checkStatus) //looks for status errors
         .then(res => res.json()) // parses
         .catch(error => console.log('There was a problem attempting to retrieve this information:', error))
+    // .then(data => generateDefinitionDisplay(data=["Couldn't retrieve the word from Merriam Webster"], userInputString="", wordFullyGuessed = false, requestFromWhere = "wordFullyGuessed"))
 }
 
 
@@ -452,16 +442,36 @@ function generateDefinitionDisplay(data, word, wordFullyGuessed, requestFromWher
             definitionApiWord.innerHTML = `Your word is <b>${word}</b>:`
         } else if (requestFromWhere === "userInitiated") {
             definitionApiWord.innerHTML = `You wish to know the the definition of the word <b>${word}</b>:`
+
+        } else if (data[0] == "Couldn't retrieve the word from Merriam Webster") {
+            definitionApiWord.innerHTML = data[0];
+            definitionApiDefinitions.innerHTML = "I'll do better next time!"
+
         } else {
             definitionApiWord.innerHTML = "I'm not saying this is your word, but it could be: " + "<b>" + word + "</b>"; //data[0].hwi.hw;  // + " " + data[0].shortdef[0]; //word
         }
         let listOfDefinitions = "";
-        for (let i = 0; i < data[0].shortdef.length; i++) { listOfDefinitions += "<p>" + (i + 1) + ".) " + data[0].shortdef[i] + " " + "</p>"  }
-        definitionApiDefinitions.innerHTML = "<b>Definition</b>: " + listOfDefinitions;
+
+        try{
+            for (let i = 0; i < data[0].shortdef.length; i++) { listOfDefinitions += "<p>" + (i + 1) + ".) " + data[0].shortdef[i] + " " + "</p>" }
+            definitionApiDefinitions.innerHTML = "<b>Definition</b>: " + listOfDefinitions;
+            definitionApiDefinitions.innerHTML += `<p><a href="http://www.google.com/search?q=${word}" target="_blank">Google: ${word}</a></p>`
+
+        }
+
+
+        catch (err) {
+            definitionApiDefinitions.innerHTML = "I couldn't come through with a definition via Merriam Webster's Dictionary. Here's a link to look it up on Google.";
+            definitionApiDefinitions.innerHTML += `<p><a href="http://www.google.com/search?q=${word}" target="_blank">${word}</a></p>`
+            console.log(err.message);
+        }
+
     } else {
         console.log("A minor error: A single definition didn't come through")
         definitionApiWord.innerHTML = "The dictionary is not pleased"
     }
+
+
 }
 
 function checkStatus(response) {

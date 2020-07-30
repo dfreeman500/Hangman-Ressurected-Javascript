@@ -1,11 +1,13 @@
 # Hangman-Resurrected-Javascript
-Most online Hangman games have the user try to guess the the computer's word. This is a simple hangman game where the computer guesses YOUR word - or you can use it to solve the other hangman games on the internet. During the guessing portion the program gives estimates on how many errors it is likely to have until the word is guessed, and shows possible and eliminated words along with possible definitions for some along the way.
+Most online Hangman games have the user try to guess the the computer's word. This is a simple hangman game where the computer guesses YOUR word - or you can use it to solve the other hangman games on the internet. During the guessing portion the program gives estimates on how many errors it is likely to have until the word is guessed, and shows possible and eliminated words along with possible definitions for some along the way. At this time, this program runs fastest in Firefox and Microsoft Edge.
 
 Code Louisville Requirements met:
 * Read and parse an external file (such as JSON or CSV) into your application and display some data from that in your app. - I read two JSON files and display data from them. 
 * Retrieve data from an external API and display data in your app (such as with fetch() or with AJAX) - I retrieve info from an online dictionary via Fetch.
 * Create a dictionary or list, populate it with several values, retrieve at least one value, and use it in your program - I use several arrays and retrieve values from them. 
-* Create and use a function that accepts two or more values, calculates or determines a new value based on those inputs, and returns a value - The user submits letter(s), empty spaces, and thel ength of the word all which start a chain of functions which calculates possible words, a best guess, and estimation of errors.
+* Create and use a function that accepts two or more values, calculates or determines a new value based on those inputs, and returns a value - The user submits letter(s), empty spaces, and the length of the word all which start a chain of functions which calculates and returns possible words, a best guess, and estimation of errors.
+* Analyze text and display information about it (ex: how many words in a paragraph) - The program provides statistics for large volumes of words (ex: how many words are candidates or are eliminated), determines the most frequent letters in sets of letters from candidate words-- and returns a guess, sums [ex: with .reduce()] estimations of errors and provides rough averages of expected errors per game as the game progresses.
+
 
 Dependencies/Instructions:
 * Download github repository to preferred directory
