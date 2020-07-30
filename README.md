@@ -1,6 +1,9 @@
 # Hangman-Resurrected-Javascript
 Most online Hangman games have the user try to guess the the computer's word. This is a simple hangman game where the computer guesses YOUR word - or you can use it to solve the other hangman games on the internet. During the guessing portion the program gives estimates on how many errors it is likely to have until the word is guessed, and shows possible and eliminated words along with possible definitions for some along the way. At this time, this program runs fastest in Firefox and Microsoft Edge.
 
+![Percentages](images/jazz.gif) 
+
+
 Code Louisville Requirements met:
 * Read and parse an external file (such as JSON or CSV) into your application and display some data from that in your app. - I read two JSON files and display data from them. 
 * Retrieve data from an external API and display data in your app (such as with fetch() or with AJAX) - I retrieve info from an online dictionary via Fetch.
@@ -50,4 +53,3 @@ Future Directions:
 
 
 
-![Percentages](images/jazz.gif) 
