@@ -9,7 +9,7 @@ Most online Hangman games have the user try to guess the computer's word. This i
 * Retrieve data from an external API and display data in your app (such as with fetch() or with AJAX) - I retrieve info from an online dictionary via fetch().
 * Create a dictionary or list, populate it with several values, retrieve at least one value, and use it in your program - I use several arrays and retrieve values from them (ex variables: errorColors, lengthVerification). 
 * Create and use a function that accepts two or more values, calculates or determines a new value based on those inputs, and returns a value - The user submits letter(s), empty spaces, and the length of the word all which start a chain of functions (see function orderOfOperations) which calculates and returns possible words, a best guess, and estimation of errors. 
-* Analyze text and display information about it (ex: how many words in a paragraph) - The program provides statistics for large volumes of words (ex: how many words are candidates or are eliminated), determines the most frequent letters in sets of letters from candidate words-- and returns a guess, sums [ex: with .reduce()] estimations of errors and provides rough averages of expected errors per game as the game progresses.
+* Analyze text and display information about it (ex: how many words in a paragraph) - The program provides statistics for large volumes of words (ex: how many words are candidates or are eliminated), determines the most frequent letters in sets of letters from candidate words-- and returns a guess, sums estimations of errors [ex: with .reduce()] and provides rough averages of expected errors per game as the game progresses.
 * Additional Requirements:
     * Greater than 5 commits
     * Multiple comments throughout code
@@ -44,7 +44,7 @@ The user chooses a word and then tells the program how long the word is. The pro
 * Validation of the user word length does not allow non numbers or numbers that don't correspond to a word in the word lists
 * Validation of user input for each text box only allows lower case letters
 * Dictionary API attempts to find a definition for a "random" word that is in the candidate word and that has the current letter being guessed
-* Clicking on some words has the API attempt to find a definition, google search link is provided for words even when MW dictioanry can't provide definition
+* Clicking on some words has the API attempt to find a definition, google search link is provided for words even when MW dictionary can't provide definition
 * Can click button to add the newest guess to an empty text box or enter manually
 * Background color of game play area progressively moves from green to red with increase in errors
 * View of the webpage is responsive for mobile phones and tablets/desktops
