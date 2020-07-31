@@ -355,15 +355,10 @@ function buildGamePlayBox(userInputWordLength, theGuess) {
             '</div>' +
             `<div class="buttonAddLetter" id="buttonAddLetter${i}">` +
             `<button type="button" id="b${i}" onclick= addLetter(${i},"${theGuess}")>${theGuess}</button>` +
-
             '</div>' +
             `</div>`
 
-        // document.getElementById(`b${i}`).onclick = function () {
-        //     console.log("it works") 
-        //     fetchData(`https://dictionaryapi.com/api/v3/references/collegiate/json/race?key=${apiKey}`) //fetch for dictionary definition
-        //     .then(data => generateDefinitionDisplay(data, "race"))
-        // }
+
     }
     html += '</div>'
     html += '<button type="button" id="submitLettersButton">Add letters if appropriate and then click to submit</button>' + '</form>';

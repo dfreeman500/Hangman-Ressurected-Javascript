@@ -112,7 +112,7 @@ min-height: auto;
 }
 .gamePlay{
     /* border: 1px solid grey; */
-    min-height: 200px;
+    min-height: 125px;
     display:flex;
     flex-direction: column;
     text-align:center;
